@@ -7,7 +7,7 @@
 #include <sstream>
 #include <stdlib.h>
 #include <time.h>
-//#include "player.h"
+#include "player.h"
 
 
 
@@ -58,7 +58,7 @@ float deltaTime = 0.0;
 int thisTime = 0;
 int lastTime = 0;
 
-
+int w, h;
 
 int main(int argc, char* argv[]) {
 
@@ -105,6 +105,15 @@ int main(int argc, char* argv[]) {
 			PickupsbkgdRect.w = 172;
 			PickupsbkgdRect.h = 63;	*/
 
+			//key info
+			bool hasKey = false;
+
+			float currentAmmo = 100.0f;
+			float maxAmmo = 100.0f;
+
+			//bool value to control the over sound effect and the buttons
+			bool alreadyOver = false;
+
 			//e handler
 			SDL_Event e;
 
@@ -115,6 +124,41 @@ int main(int argc, char* argv[]) {
 
 			// set up the initial state
 			GameState gameState = LEVEL;
+
+	//////AUDIO And STUFF////////
+	//Open Audio Channel
+		Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+
+		//Load a MUSIC file
+
+		//Mix_Music *bgm = Mix_LoadMUS((audio_dir + "music.mp3").c_str());
+
+		//if (bgm == NULL) {
+			// In the case that the window could not be made...
+		//	printf("Could not create music: %s\n", SDL_GetError());
+		//	return 1;
+		//}
+
+		//if the MUSIC file is not playing - play it
+		//if (!Mix_PlayingMusic())
+		//	Mix_PlayMusic(bgm, -1);
+
+		//Set up a Sound Effect CHUNK for the button over state
+		Mix_Chunk *overSound = Mix_LoadWAV((audio_dir + "over.wav").c_str());
+
+		//Set up a Sound Effect CHUNK for the button pressed state
+		Mix_Chunk *pressedSound = Mix_LoadWAV((audio_dir + "pressed.wav").c_str());
+
+		Mix_Chunk *pickupSound = Mix_LoadWAV((audio_dir + "itemPickup.wav").c_str());
+
+		Mix_Chunk *guardHit = Mix_LoadWAV((audio_dir + "guardhit.wav").c_str());
+
+		Mix_Chunk *kingHit = Mix_LoadWAV((audio_dir + "kinghit.wav").c_str());
+
+
+		//******Create Player START**************
+		Player player = Player(renderer, 0, images_dir.c_str(),audio_dir.c_str(), 150.0f, 500.0f );
+
     // The window is open: could enter program loop here (see SDL_PollEvent())
 			while(!quit)
 			{
@@ -125,30 +169,550 @@ int main(int argc, char* argv[]) {
 
 					}break;
 					case LEVEL:
-					{
-						level = true;
-						//start loop
-						while(level)
-						{
-							//Create deltaTime - for frame rate independence
-							thisTime = SDL_GetTicks();
-							deltaTime = (float)(thisTime - lastTime) / 1000;
-							lastTime = thisTime;
-
-							//Handle Events on Queue - Keypresses and such START*************
-							while (SDL_PollEvent(&e) != 0)
-							{
-								//User requests quit
-								if (e.type == SDL_QUIT)
 								{
-									quit = true;
-									level = false;
-									break;
-								}
-							}
-						}
+									//ammo1.active = false;
+									//bridge.active = false;
+									//alreadyOver = false;
+									level = true;
 
-					}break;
+								/*	if (Mix_PlayingMusic())
+									{
+										Mix_FadeOutMusic(2000);
+										Mix_FreeMusic(bgm);
+									}
+
+									bgm = Mix_LoadMUS((audio_dir + "closingin.mp3").c_str());
+
+									if (bgm == NULL) {
+										 //In the case that the window could not be made...
+										printf("Could not create music: %s\n", SDL_GetError());
+										return 1;
+									}
+
+									//if the MUSIC file is not playing - play it
+									if (!Mix_PlayingMusic())
+										Mix_PlayMusic(bgm, -1);	*/
+
+									//start loop
+									while(level)
+									{
+									//Create deltaTime - for frame rate independence
+									thisTime = SDL_GetTicks();
+									deltaTime = (float)(thisTime - lastTime) / 1000;
+									lastTime = thisTime;
+
+									//Handle Events on Queue - Keypresses and such START*************
+									while (SDL_PollEvent(&e) != 0)
+									{
+										//User requests quit
+										if (e.type == SDL_QUIT)
+										{
+											quit = true;
+											level = false;
+											break;
+										}
+										else if(e.type == SDL_KEYDOWN)
+										{
+
+										switch (e.key.keysym.sym)
+										{
+										case SDLK_q:
+											quit = true;
+											level = false;
+											break;
+
+										case SDLK_w:
+
+											player.posRect.y -= 10;
+											break;
+
+										case SDLK_s:
+
+											player.posRect.y += 10;
+											break;
+
+										case SDLK_d:
+
+											player.posRect.x += 10;
+											break;
+
+										case SDLK_a:
+
+											player.posRect.x -= 10;
+											break;
+										}
+											break;
+
+										}//SWITCH (E.TYPE)
+
+									}// POLL EVENT
+
+									//UPDATE SECTION
+									//update player 1 tank
+									player.Update(deltaTime);
+
+
+
+									//move background
+									if ((player.posRect.x >= 1024 - player.posRect.w) && (player.Xvalue > 8000))
+									{
+										//Adjust position floats based on speed, direction and deltaTime
+										X_pos -= (player.speed) * deltaTime;
+
+										if (bkgdRect.x > -1024) {
+											//Update bullet position with code to account for precision loss
+											bkgdRect.x = (int)(X_pos + 0.5f);
+
+											//move enemy
+										//	guard1.guardMoveX(-player.speed, deltaTime);
+										//	guard2.guardMoveX(-player.speed, deltaTime);
+										//	guard3.guardMoveX(-player.speed, deltaTime);
+										//	guard4.guardMoveX(-player.speed, deltaTime);
+										//	guard5.guardMoveX(-player.speed, deltaTime);
+
+										//	letter.TankMoveX(-player.speed, deltaTime);
+										//	glove.TankMoveX(-player.speed, deltaTime);
+										//	handkerchief.TankMoveX(-player.speed, deltaTime);
+										//	rose.TankMoveX(-player.speed, deltaTime);
+										//	hat.TankMoveX(-player.speed, deltaTime);
+
+										//	bridge.TankMoveX(-player.speed, deltaTime);
+
+										//	ammo1.TankMoveX(-player.speed, deltaTime);
+										}
+										else
+										{
+											X_pos = bkgdRect.x;
+										}
+									}
+									if ((player.posRect.x <= 0) && (player.Xvalue < 8000))
+									{
+										X_pos += (player.speed) * deltaTime;
+
+										if (bkgdRect.x < 0) {
+											//Update bullet position with code to account for precision loss
+											bkgdRect.x = (int)(X_pos + 0.5f);
+
+											//move enemy tank
+										//	guard1.guardMoveX(player.speed, deltaTime);
+										//	guard2.guardMoveX(player.speed, deltaTime);
+										//	guard3.guardMoveX(player.speed, deltaTime);
+										//	guard4.guardMoveX(player.speed, deltaTime);
+										//	guard5.guardMoveX(player.speed, deltaTime);
+
+										//	letter.TankMoveX(player.speed, deltaTime);
+										//	glove.TankMoveX(player.speed, deltaTime);
+										//	handkerchief.TankMoveX(player.speed, deltaTime);
+										//	rose.TankMoveX(player.speed, deltaTime);
+										//	hat.TankMoveX(player.speed, deltaTime);
+
+										//	bridge.TankMoveX(player.speed, deltaTime);
+
+										//	ammo1.TankMoveX(player.speed, deltaTime);
+										}
+										else
+										{
+											X_pos = bkgdRect.x;
+										}
+									}
+
+									if ((player.posRect.y >= 768 - player.posRect.h) && (player.Yvalue > 8000))
+									{
+										//Adjust position floats based on speed, direction and deltaTime
+										Y_pos -= (player.speed) * deltaTime;
+
+										if (bkgdRect.y > -768) {
+											//Update bullet position with code to account for precision loss
+											bkgdRect.y = (int)(Y_pos + 0.5f);
+
+											//move enemy tank
+										//	guard1.guardMoveY(-player.speed, deltaTime);
+										//	guard2.guardMoveY(-player.speed, deltaTime);
+										//	guard3.guardMoveY(-player.speed, deltaTime);
+										//	guard4.guardMoveY(-player.speed, deltaTime);
+										//	guard5.guardMoveY(-player.speed, deltaTime);
+
+										//	letter.TankMoveY(-player.speed, deltaTime);
+										//	glove.TankMoveY(-player.speed, deltaTime);
+										//	handkerchief.TankMoveY(-player.speed, deltaTime);
+										//	rose.TankMoveY(-player.speed, deltaTime);
+										//	hat.TankMoveY(-player.speed, deltaTime);
+
+										//	bridge.TankMoveY(-player.speed, deltaTime);
+
+										//	ammo1.TankMoveY(-player.speed, deltaTime);
+								}
+										else
+										{
+											Y_pos = bkgdRect.y;
+										}
+									}
+									if ((player.posRect.y <= 0) && (player.Yvalue < 8000))
+									{
+										Y_pos += (player.speed) * deltaTime;
+
+										if (bkgdRect.y < 0) {
+											//Update bullet position with code to account for precision loss
+											bkgdRect.y = (int)(Y_pos + 0.5f);
+
+											//move enemy tank
+										//	guard1.guardMoveY(player.speed, deltaTime);
+										//	guard2.guardMoveY(player.speed, deltaTime);
+										//	guard3.guardMoveY(player.speed, deltaTime);
+										//	guard4.guardMoveY(player.speed, deltaTime);
+										//	guard5.guardMoveY(player.speed, deltaTime);
+
+										//	letter.TankMoveY(player.speed, deltaTime);
+										//	glove.TankMoveY(player.speed, deltaTime);
+										//	handkerchief.TankMoveY(player.speed, deltaTime);
+										//	rose.TankMoveY(player.speed, deltaTime);
+										//	hat.TankMoveY(player.speed, deltaTime);
+
+										//	bridge.TankMoveY(player.speed, deltaTime);
+
+										//	ammo1.TankMoveY(player.speed, deltaTime);
+										}
+										else
+										{
+											Y_pos = bkgdRect.y;
+										}
+									}
+
+									//update enemy tank
+								//	guard1.Update(deltaTime, player.posRect);
+								//	guard2.Update(deltaTime, player.posRect);
+								//	guard3.Update(deltaTime, player.posRect);
+								//	guard4.Update(deltaTime, player.posRect);
+								//	guard5.Update(deltaTime, player.posRect);
+
+									//check for hit from tanks
+									//1
+								/*	if (SDL_HasIntersection(&player.posRect, &guard1.guardRect))
+									{
+										player.guardHit();
+										player.playerHealth--;
+										if (player.playerHealth <= 0)
+										{
+											level1 = false;
+											gameState = LOSE;
+										}
+										//break;
+									}
+
+									//2
+									if (SDL_HasIntersection(&player.posRect, &guard2.guardRect))
+									{
+										player.guardHit();
+										player.playerHealth--;
+										if (player.playerHealth <= 0)
+										{
+											level1 = false;
+											gameState = LOSE;
+										}
+										//break;
+									}
+
+									//3
+									if (SDL_HasIntersection(&player.posRect, &guard3.guardRect))
+									{
+										player.guardHit();
+										player.playerHealth--;
+										if (player.playerHealth <= 0)
+										{
+											level1 = false;
+											gameState = LOSE;
+										}
+										//break;
+									}
+
+									//4
+									if (SDL_HasIntersection(&player.posRect, &guard4.guardRect))
+									{
+										player.guardHit();
+										player.playerHealth--;
+										if (player.playerHealth <= 0)
+										{
+											level1 = false;
+											gameState = LOSE;
+										}
+										//break;
+									}
+									//5
+									if (SDL_HasIntersection(&player.posRect, &guard5.guardRect))
+									{
+										player.guardHit();
+										player.playerHealth--;
+										if (player.playerHealth <= 0)
+										{
+											level1 = false;
+											gameState = LOSE;
+										}
+										//break;
+									}
+
+									//check if player hit guards
+									for (int i = 0; i < player.bulletList.size(); i++)
+									{
+										//guard
+										//1
+										if (SDL_HasIntersection(&guard1.guardRect, &player.bulletList[i].posRect))
+										{
+											Mix_PlayChannel(-1, guardHit, 0);
+											player.bulletList[i].Reset();
+											if (guard1.active == true)
+											{
+												guard1.RemoveHealth();
+											}
+										}
+										//2
+										if (SDL_HasIntersection(&guard2.guardRect, &player.bulletList[i].posRect))
+										{
+											Mix_PlayChannel(-1, guardHit, 0);
+											player.bulletList[i].Reset();
+											if (guard2.active == true)
+											{
+												guard2.RemoveHealth();
+											}
+										}
+										//3
+										if (SDL_HasIntersection(&guard3.guardRect, &player.bulletList[i].posRect))
+										{
+											Mix_PlayChannel(-1, guardHit, 0);
+											player.bulletList[i].Reset();
+											if (guard3.active == true)
+											{
+												guard3.RemoveHealth();
+											}
+										}
+										//4
+										if (SDL_HasIntersection(&guard4.guardRect, &player.bulletList[i].posRect))
+										{
+											Mix_PlayChannel(-1, guardHit, 0);
+											player.bulletList[i].Reset();
+											if (guard4.active == true)
+											{
+												guard4.RemoveHealth();
+											}
+										}
+										//5
+										if (SDL_HasIntersection(&guard5.guardRect, &player.bulletList[i].posRect))
+										{
+											Mix_PlayChannel(-1, guardHit, 0);
+											player.bulletList[i].Reset();
+											if (guard5.active == true)
+											{
+												guard5.RemoveHealth();
+											}
+										}
+									}
+
+									//letter
+									if (SDL_HasIntersection(&player.posRect, &letter.pickupRect))
+									{
+										Mix_PlayChannel(-1, pickupSound, 0);
+										letter.active = false;
+										letter.pickupRect.x = -5000;
+										letter.pickupRect.y = -5000;
+										currentItem += 100 / 5;
+										itemCount ++;
+										if(itemCount >= 5)
+										{
+											bridge.active = true;
+										}
+									}
+
+									//glove
+									if (SDL_HasIntersection(&player.posRect, &glove.pickupRect))
+									{
+										Mix_PlayChannel(-1, pickupSound, 0);
+										glove.active = false;
+										glove.pickupRect.x = -5000;
+										glove.pickupRect.y = -5000;
+										currentItem += 100 / 5;
+										itemCount++;
+										if(itemCount >= 5)
+										{
+											bridge.active = true;
+										}
+									}
+
+									//handkerchief
+									if (SDL_HasIntersection(&player.posRect, &handkerchief.pickupRect))
+									{
+										Mix_PlayChannel(-1, pickupSound, 0);
+										handkerchief.active = false;
+										handkerchief.pickupRect.x = -5000;
+										handkerchief.pickupRect.y = -5000;
+										currentItem += 100 / 5;
+										itemCount++;
+										if(itemCount >= 5)
+										{
+											bridge.active = true;
+										}
+									}
+
+									//rose
+									if (SDL_HasIntersection(&player.posRect, &rose.pickupRect))
+									{
+										Mix_PlayChannel(-1, pickupSound, 0);
+										rose.active = false;
+										rose.pickupRect.x = -5000;
+										rose.pickupRect.y = -5000;
+										currentItem += 100 / 5;
+										itemCount ++;
+										if(itemCount >= 5)
+										{
+											bridge.active = true;
+										}
+									}
+									//hat
+									if (SDL_HasIntersection(&player.posRect, &hat.pickupRect))
+									{
+										Mix_PlayChannel(-1, pickupSound, 0);
+										hat.active = false;
+										hat.pickupRect.x = -5000;
+										hat.pickupRect.y = -5000;
+										currentItem += 100 / 5;
+										itemCount ++;
+										if(itemCount >= 5)
+										{
+											bridge.active = true;
+										}
+									}
+
+									if (SDL_HasIntersection(&player.posRect, &bridge.pickupRect))
+									{
+										level1 = false;
+										gameState = LEVEL2;
+									}
+
+									if (SDL_HasIntersection(&player.posRect, &ammo1.pickupRect))
+									{
+										Mix_PlayChannel(-1, pickupSound, 0);
+										ammo1.active = false;
+										rockCount = 6;
+										throwRock = true;
+									}
+
+									if (rockCount == 6)
+									{
+										currentAmmo = 100;
+
+									}
+
+									if (rockCount == 5)
+									{
+										currentAmmo -= 100/6;
+
+									}
+
+									if (rockCount == 4)
+									{
+										currentAmmo -= 100/6;
+
+									}
+
+									if (rockCount == 3)
+									{
+										currentAmmo -= 100/6;
+
+									}
+
+									if (rockCount == 2)
+									{
+										currentAmmo -= 100;
+
+									}
+
+									if (rockCount == 1)
+									{
+										currentAmmo -= 100/6;
+
+									}
+
+									if (rockCount == 0)
+									{
+										currentAmmo -= 100/6;
+										ammo1.active = true;
+
+									}
+
+									movingRect.w = currentItem / maxItem * 272;
+									ammoMRect.w = currentAmmo / maxAmmo * 75;		*/
+
+
+									//DRAW SECTION
+									//Clear the SDL RenderTarget
+									SDL_RenderClear(renderer);
+
+									//Draw Background
+
+									SDL_RenderCopy(renderer, Level, NULL, &bkgdRect);
+
+									//SDL_RenderCopy(renderer, itemB, NULL, &itemRect);
+
+									//SDL_RenderCopy(renderer, itemM, NULL, &movingRect);
+
+									//SDL_RenderCopy(renderer, itemF, NULL, &itemRect);
+
+									//SDL_RenderCopy(renderer, ammoB, NULL, &ammoRect);
+
+									//SDL_RenderCopy(renderer, ammoM, NULL, &ammoMRect);
+
+									//SDL_RenderCopy(renderer, ammoF, NULL, &ammoFRect);
+
+						/*			//Draw letter
+									if (letter.active)
+									{
+										letter.Draw(renderer);
+									}
+
+									//glove
+									if (glove.active)
+									{
+										glove.Draw(renderer);
+									}
+
+									//handkerchief
+									if (handkerchief.active)
+									{
+										handkerchief.Draw(renderer);
+									}
+									//rose
+									if (rose.active)
+									{
+										rose.Draw(renderer);
+									}
+									//hat
+									if (hat.active)
+									{
+										hat.Draw(renderer);
+									}
+									//bridge
+									if (bridge.active)
+									{
+										bridge.Draw(renderer);
+									}
+									//ammo pickup
+									if (ammo1.active)
+									{
+										ammo1.Draw(renderer);
+									}								*/
+									//Draw player1 tank
+									player.Draw(renderer);
+
+									//guard1.Draw(renderer);
+									//guard2.Draw(renderer);
+									//guard3.Draw(renderer);
+									//guard4.Draw(renderer);
+									//guard5.Draw(renderer);
+
+									// SDL Render present
+									SDL_RenderPresent(renderer);
+								}//END LEVEL LOOP
+						}//END CASE LEVEL
+
+									break;
 					case WIN:
 					{
 
