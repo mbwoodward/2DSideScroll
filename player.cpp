@@ -8,15 +8,15 @@ Player::Player(SDL_Renderer *renderer, int pNum, string filePath, string audioPa
 	health = IMG_LoadTexture(renderer, (filePath + "health.png").c_str());
 	magic = IMG_LoadTexture(renderer, (filePath + "magic.png").c_str());
 
-	healthR.x = 10;
-	healthR.y = 50;
-	healthR.w = 239;
-	healthR.h = 32;
+	healthR.x = 110;
+	healthR.y = 43;
+	healthR.w = 147;
+	healthR.h = 12;
 
-	magicR.x = 10;
-	magicR.y = 50;
-	magicR.w = 239;
-	magicR.h = 32;
+	magicR.x = 110;
+	magicR.y = 60;
+	magicR.w = 147;
+	magicR.h = 12;
 
 	//player health
 	playerHealth = 100.0f;
@@ -27,6 +27,8 @@ Player::Player(SDL_Renderer *renderer, int pNum, string filePath, string audioPa
 
 	//activate the player
 	active = true;
+
+	flip = false;
 
 	//set the player number 0 or 1
 	playerNum = pNum;
@@ -41,10 +43,12 @@ Player::Player(SDL_Renderer *renderer, int pNum, string filePath, string audioPa
 	if(playerNum == 0)
 	{
 		playerPath = filePath + "player.png";
+		player2Path = filePath + "player2.png";
 	}
 
 	//load the surface into the texture
 	texture = IMG_LoadTexture(renderer, playerPath.c_str());
+	texture2 = IMG_LoadTexture(renderer, player2Path.c_str());
 
 	//set the SDL_Rect X and Y for the player
 	posRect.x = x;
@@ -82,39 +86,40 @@ Player::Player(SDL_Renderer *renderer, int pNum, string filePath, string audioPa
 	}
 
 	//Create the player's bullet pool
-	/*for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		//create the bullet and move offscreen, out of the game play area
 		PlayerBullet tmpBullet(renderer, bulletPath, -1000, -1000, 0, 0);
 
 		//add to bulletList
 		bulletList.push_back(tmpBullet);
-	}*/
+	}
 }
 
 void Player::Update(float deltaTime)
 {
+
 	//check for gamepad input
 	if(Xvalue != 0 || Yvalue != 0)
 	{
 		//get the angle that tank needs to face
 		//x = posRect.x - xDir;
 		//y = posRect.y - yDir;
-		//tankangle = atan2(Yvalue, Xvalue) * 180/3.14;
+		tankangle = atan2(Yvalue, Xvalue) * 180/3.14;
 
 		//set this as the old angle and dir some the player/tank can shoot when stopped
-		//oldAngle = tankangle;
+		oldAngle = tankangle;
 		//xDirOld = xDir;
 		//yDirOld = yDir;
 
-		//float radians = (tankangle * 3.14)/180;
+		float radians = (tankangle * 3.14)/180;
 
-		//float move_x = speed * cos(radians);
-		//float move_y = speed * sin(radians);
+		float move_x = speed * cos(radians);
+		float move_y = speed * sin(radians);
 
 		//Update floats for precision loss
-		//pos_X += (move_x) * deltaTime;
-		//pos_Y += (move_y) * deltaTime;
+		pos_X += (move_x) * deltaTime;
+		pos_Y += (move_y) * deltaTime;
 
 		//Update player position with code to account for precision loss
 		posRect.x = (int)(pos_X + 0.5f);
@@ -122,14 +127,15 @@ void Player::Update(float deltaTime)
 
 	}else
 	{
-		//tankangle = oldAngle;
+		tankangle = oldAngle;
 	}
 
-	//Adjust position floats based on speed, direction of joystick axis and deltaTime
-	//pos_X += (speed * xDir) * deltaTime;
-	//pos_Y += (speed * yDir) * deltaTime;
 
-	//check if the tank is off screen and set it back
+	//Adjust position floats based on speed, direction of joystick axis and deltaTime
+	pos_X += (speed * xDir) * deltaTime;
+	pos_Y += (speed * yDir) * deltaTime;
+
+	//check if the player is off screen and set it back
 	if(posRect.x < 0)
 	{
 		posRect.x = 0;
@@ -155,7 +161,7 @@ void Player::Update(float deltaTime)
 	}
 
 	//Update the tank's bullets
-	/*for(int i = 0; i < bulletList.size(); i++)
+	for(int i = 0; i < bulletList.size(); i++)
 	{
 		//check to see if the bullet is active
 		if(bulletList[i].active)
@@ -163,7 +169,7 @@ void Player::Update(float deltaTime)
 			//Update Bullet
 			bulletList[i].Update(deltaTime);
 		}
-	}*/
+	}
 
 }
 
@@ -171,15 +177,15 @@ void Player::chaseHit()
 {
 	playerHealth -= .025f;
 
-	healthR.w = playerHealth/maxHealth * 239;
+	healthR.w = playerHealth/maxHealth * 147;
 }
 
 //hit by tank
 void Player::turretHit()
 {
-		playerHealth -= 25;
+		playerHealth -= 15;
 
-	healthR.w = playerHealth/maxHealth * 239;
+	healthR.w = playerHealth/maxHealth * 147;
 }
 
 void Player::wardenHit()
@@ -187,15 +193,15 @@ void Player::wardenHit()
 		playerHealth -= 25;
 		playerMagic -= 25;
 
-	healthR.w = playerHealth/maxHealth * 239;
-	magicR.w = playerMagic/maxMagic * 239;
+	healthR.w = playerHealth/maxHealth * 147;
+	magicR.w = playerMagic/maxMagic * 147;
 }
 
 //hit by bullet
 void Player::Draw(SDL_Renderer *renderer)
 {
 	//draw the player's bullets
-/*	for(int i = 0; i < bulletList.size(); i++)
+	for(int i = 0; i < bulletList.size(); i++)
 	{
 		//check to see if the bullet is active
 		if(bulletList[i].active)
@@ -203,10 +209,16 @@ void Player::Draw(SDL_Renderer *renderer)
 			//Draw Bullet
 			bulletList[i].Draw(renderer);
 		}
-	}*/
+	}
 
 	//draw the player texture using the vars texture and posRect
+	if(flip == true)
+	{
+	SDL_RenderCopy(renderer, texture2, NULL, &posRect);
+	}else
+	{
 	SDL_RenderCopy(renderer, texture, NULL, &posRect);
+	}
 
 	SDL_RenderCopy(renderer, health, NULL, &healthR);
 
@@ -220,13 +232,13 @@ void Player::OnMouseButton(const SDL_MouseButtonEvent event)
 		switch(event.button)
 		{
 		case SDL_BUTTON_LEFT:
-			//CreateBullet();
+			CreateBullet();
 			break;
 		}
 	}
 }
 
-/*void Player::CreateBullet()
+void Player::CreateBullet()
 {
 	//see if there is a bullet active to fire
 	for (int i = 0; i < bulletList.size(); i++)
@@ -270,7 +282,7 @@ void Player::OnMouseButton(const SDL_MouseButtonEvent event)
 			break;
 		}
 	}
-}*/
+}
 
 
 

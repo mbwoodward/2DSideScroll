@@ -73,7 +73,7 @@ int main(int argc, char* argv[]) {
 	SDL_Renderer *renderer = NULL;
 
 	//Create a SDL Window in the middle of the screen
-	window = SDL_CreateWindow("Acquired Cross",
+	window = SDL_CreateWindow("The Final Task",
 			SDL_WINDOWPOS_CENTERED,
 			SDL_WINDOWPOS_CENTERED,
 			SCREEN_WIDTH, SCREEN_HEIGHT,
@@ -90,26 +90,23 @@ int main(int argc, char* argv[]) {
 			bkgdRect.x = 0;
 			bkgdRect.y = 0;
 
-			bkgdRect.w = 2048;
-			bkgdRect.h = 1536;
+			bkgdRect.w = 3072;
+			bkgdRect.h = 2304;
 
 			float X_pos = 0.0f;
 			float Y_pos = 0.0f;
 	//****Level*****
 
-	/*		//pickup hud
-			SDL_Texture *InvBkgd = IMG_LoadTexture(renderer, (images_dir + "invBkgd.png").c_str());
+			//pickup hud
+			SDL_Texture *InvBkgd = IMG_LoadTexture(renderer, (images_dir + "invbkgd.png").c_str());
 			SDL_Rect PickupsbkgdRect;
-			PickupsbkgdRect.x = 370;
-			PickupsbkgdRect.y = 10;
-			PickupsbkgdRect.w = 172;
-			PickupsbkgdRect.h = 63;	*/
+			PickupsbkgdRect.x = 5;
+			PickupsbkgdRect.y = 5;
+			PickupsbkgdRect.w = 259;
+			PickupsbkgdRect.h = 161;
 
 			//key info
 			bool hasKey = false;
-
-			float currentAmmo = 100.0f;
-			float maxAmmo = 100.0f;
 
 			//bool value to control the over sound effect and the buttons
 			bool alreadyOver = false;
@@ -232,18 +229,21 @@ int main(int argc, char* argv[]) {
 											break;
 
 										case SDLK_d:
-
+											player.flip = false;
 											player.posRect.x += 10;
 											break;
 
 										case SDLK_a:
-
+											player.flip = true;
 											player.posRect.x -= 10;
 											break;
-										}
+										}//END SWITCH KEYDOWN
 											break;
 
-										}//SWITCH (E.TYPE)
+										}else if(e.type == SDL_MOUSEBUTTONDOWN)
+										{
+											player.OnMouseButton(e.button);
+										}
 
 									}// POLL EVENT
 
@@ -254,12 +254,12 @@ int main(int argc, char* argv[]) {
 
 
 									//move background
-									if ((player.posRect.x >= 1024 - player.posRect.w) && (player.Xvalue > 8000))
+									if ((player.posRect.x >= 1024 - player.posRect.w))
 									{
 										//Adjust position floats based on speed, direction and deltaTime
 										X_pos -= (player.speed) * deltaTime;
 
-										if (bkgdRect.x > -1024) {
+										if (bkgdRect.x > -2048) {
 											//Update bullet position with code to account for precision loss
 											bkgdRect.x = (int)(X_pos + 0.5f);
 
@@ -271,21 +271,13 @@ int main(int argc, char* argv[]) {
 										//	guard5.guardMoveX(-player.speed, deltaTime);
 
 										//	letter.TankMoveX(-player.speed, deltaTime);
-										//	glove.TankMoveX(-player.speed, deltaTime);
-										//	handkerchief.TankMoveX(-player.speed, deltaTime);
-										//	rose.TankMoveX(-player.speed, deltaTime);
-										//	hat.TankMoveX(-player.speed, deltaTime);
-
-										//	bridge.TankMoveX(-player.speed, deltaTime);
-
-										//	ammo1.TankMoveX(-player.speed, deltaTime);
 										}
 										else
 										{
 											X_pos = bkgdRect.x;
 										}
 									}
-									if ((player.posRect.x <= 0) && (player.Xvalue < 8000))
+									if ((player.posRect.x <= 0))
 									{
 										X_pos += (player.speed) * deltaTime;
 
@@ -301,14 +293,7 @@ int main(int argc, char* argv[]) {
 										//	guard5.guardMoveX(player.speed, deltaTime);
 
 										//	letter.TankMoveX(player.speed, deltaTime);
-										//	glove.TankMoveX(player.speed, deltaTime);
-										//	handkerchief.TankMoveX(player.speed, deltaTime);
-										//	rose.TankMoveX(player.speed, deltaTime);
-										//	hat.TankMoveX(player.speed, deltaTime);
 
-										//	bridge.TankMoveX(player.speed, deltaTime);
-
-										//	ammo1.TankMoveX(player.speed, deltaTime);
 										}
 										else
 										{
@@ -316,12 +301,12 @@ int main(int argc, char* argv[]) {
 										}
 									}
 
-									if ((player.posRect.y >= 768 - player.posRect.h) && (player.Yvalue > 8000))
+									if ((player.posRect.y >= 768 - player.posRect.h))
 									{
 										//Adjust position floats based on speed, direction and deltaTime
 										Y_pos -= (player.speed) * deltaTime;
 
-										if (bkgdRect.y > -768) {
+										if (bkgdRect.y > -1536) {
 											//Update bullet position with code to account for precision loss
 											bkgdRect.y = (int)(Y_pos + 0.5f);
 
@@ -333,21 +318,13 @@ int main(int argc, char* argv[]) {
 										//	guard5.guardMoveY(-player.speed, deltaTime);
 
 										//	letter.TankMoveY(-player.speed, deltaTime);
-										//	glove.TankMoveY(-player.speed, deltaTime);
-										//	handkerchief.TankMoveY(-player.speed, deltaTime);
-										//	rose.TankMoveY(-player.speed, deltaTime);
-										//	hat.TankMoveY(-player.speed, deltaTime);
-
-										//	bridge.TankMoveY(-player.speed, deltaTime);
-
-										//	ammo1.TankMoveY(-player.speed, deltaTime);
 								}
 										else
 										{
 											Y_pos = bkgdRect.y;
 										}
 									}
-									if ((player.posRect.y <= 0) && (player.Yvalue < 8000))
+									if ((player.posRect.y <= 0))
 									{
 										Y_pos += (player.speed) * deltaTime;
 
@@ -363,14 +340,6 @@ int main(int argc, char* argv[]) {
 										//	guard5.guardMoveY(player.speed, deltaTime);
 
 										//	letter.TankMoveY(player.speed, deltaTime);
-										//	glove.TankMoveY(player.speed, deltaTime);
-										//	handkerchief.TankMoveY(player.speed, deltaTime);
-										//	rose.TankMoveY(player.speed, deltaTime);
-										//	hat.TankMoveY(player.speed, deltaTime);
-
-										//	bridge.TankMoveY(player.speed, deltaTime);
-
-										//	ammo1.TankMoveY(player.speed, deltaTime);
 										}
 										else
 										{
@@ -649,17 +618,8 @@ int main(int argc, char* argv[]) {
 
 									SDL_RenderCopy(renderer, Level, NULL, &bkgdRect);
 
-									//SDL_RenderCopy(renderer, itemB, NULL, &itemRect);
-
-									//SDL_RenderCopy(renderer, itemM, NULL, &movingRect);
-
-									//SDL_RenderCopy(renderer, itemF, NULL, &itemRect);
-
-									//SDL_RenderCopy(renderer, ammoB, NULL, &ammoRect);
-
-									//SDL_RenderCopy(renderer, ammoM, NULL, &ammoMRect);
-
-									//SDL_RenderCopy(renderer, ammoF, NULL, &ammoFRect);
+									//draw pickupsbkgd
+									SDL_RenderCopy(renderer, InvBkgd, NULL, &PickupsbkgdRect);
 
 						/*			//Draw letter
 									if (letter.active)

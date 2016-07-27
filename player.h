@@ -26,7 +26,7 @@ using namespace std;
 #include <SDL2/SDL_ttf.h>
 #endif
 
-//#include "playerbullet.h"
+#include "playerbullet.h"
 
 class Player
 {
@@ -47,6 +47,7 @@ public:
 
 	float playerMagic, maxMagic;
 
+	bool flip;
 
 	//tank hit by eTank
 	void chaseHit();
@@ -59,17 +60,18 @@ public:
 	bool active;
 
 	//variable to hold the list of bullets
-	//vector<PlayerBullet> bulletList;
+	vector<PlayerBullet> bulletList;
 
 	//string to hold the path to the player's texture
 	string playerPath;
+	string player2Path;
 
 	//Integer for the player's number
 	int playerNum;
 
 	//player's texture to hold image
 	SDL_Texture *texture;
-
+	SDL_Texture *texture2;
 	//player's SDL_Rect for the X,Y,W, and H of texture
 	SDL_Rect posRect;
 
@@ -90,7 +92,7 @@ public:
 	SDL_Point center;
 
 	//keep the last angle so the player can fire in the correct direction
-	//float oldAngle;
+	float oldAngle, tankangle;
 
 	//audio sound effect - CHUNK
 	Mix_Chunk *fire;
