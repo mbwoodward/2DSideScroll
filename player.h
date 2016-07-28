@@ -56,6 +56,8 @@ public:
 	void turretHit();
 	void wardenHit();
 
+	void Fire();
+
 	//is the player active - still alive?
 	bool active;
 
@@ -88,7 +90,7 @@ public:
 	//vars used to get the angle between the tank's position and the joystick position
 	float x, y;
 
-	//Point that will be used to rotate the turret - relative to the turret barrel's Rect
+	//Point that will be used to track player
 	SDL_Point center;
 
 	//keep the last angle so the player can fire in the correct direction

@@ -175,7 +175,7 @@ void Player::Update(float deltaTime)
 
 void Player::chaseHit()
 {
-	playerHealth -= .025f;
+	playerHealth -= .01f;
 
 	healthR.w = playerHealth/maxHealth * 147;
 }
@@ -195,6 +195,16 @@ void Player::wardenHit()
 
 	healthR.w = playerHealth/maxHealth * 147;
 	magicR.w = playerMagic/maxMagic * 147;
+}
+
+void Player::Fire()
+{
+	if(playerMagic > 0)
+	{
+		playerMagic -= 1;
+
+		magicR.w = playerMagic/maxMagic * 147;
+	}
 }
 
 //hit by bullet
@@ -254,8 +264,8 @@ void Player::CreateBullet()
 
 			//use some math in the x position to get the bullet close to
 			//the center of the player using player width
-			bulletList[i].posRect.x = (posRect.x + (posRect.w / 2));
-			bulletList[i].posRect.y = (posRect.y + (posRect.h / 2));
+			bulletList[i].posRect.x = (posRect.x + (posRect.w));
+			bulletList[i].posRect.y = (posRect.y + (posRect.h / 3));
 
 			//finishing aligning to the player center using the texture width
 			bulletList[i].posRect.x = bulletList[i].posRect.x - (bulletList[i].posRect.w / 2);
