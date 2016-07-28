@@ -17,13 +17,6 @@ using namespace std;
 #include "SDL_ttf.h"
 #endif
 
-#if defined(__linux__)
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_mixer.h>
-#include <SDL2/SDL_ttf.h>
-#endif 
-
 class PlayerBullet
 {
 public:

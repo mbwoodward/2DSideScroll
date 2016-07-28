@@ -262,6 +262,9 @@ int main(int argc, char* argv[]) {
 											player.OnMouseButton(e.button);
 											player.Fire();
 											}
+										}else if(e.type == SDL_MOUSEMOTION)
+										{
+
 										}
 
 									}// POLL EVENT
