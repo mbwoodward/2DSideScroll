@@ -10,6 +10,7 @@
 #include "player.h"
 #include "chase.h"
 #include "pickup.h"
+#include "turret.h"
 
 
 
@@ -122,6 +123,10 @@ int main(int argc, char* argv[]) {
 			Pickup key = Pickup(renderer, images_dir.c_str(), 0, 400.0f, 500.0f);
 			Pickup health = Pickup(renderer, images_dir.c_str(), 1, 200.0f, 500.0f);
 			Pickup magic = Pickup(renderer, images_dir.c_str(), 2, 600.0f, 500.0f);
+
+			//*****Secondary-SPIRITS**********
+			Pickup spirits = Pickup(renderer, images_dir.c_str(), 3, 64.0f, 1002.0f);
+
 
 			//bool value to control the over sound effect and the buttons
 			bool alreadyOver = false;
@@ -291,6 +296,8 @@ int main(int argc, char* argv[]) {
 											key.MoveX(-player.speed, deltaTime);
 											health.MoveX(-player.speed, deltaTime);
 											magic.MoveX(-player.speed, deltaTime);
+
+											spirits.MoveX(-player.speed, deltaTime);
 										}
 										else
 										{
@@ -311,6 +318,8 @@ int main(int argc, char* argv[]) {
 											key.MoveX(player.speed, deltaTime);
 											health.MoveX(player.speed, deltaTime);
 											magic.MoveX(player.speed, deltaTime);
+
+											spirits.MoveX(player.speed, deltaTime);
 
 										}
 										else
@@ -334,6 +343,8 @@ int main(int argc, char* argv[]) {
 											key.MoveY(-player.speed, deltaTime);
 											health.MoveY(-player.speed, deltaTime);
 											magic.MoveY(-player.speed, deltaTime);
+
+											spirits.MoveY(-player.speed, deltaTime);
 								}
 										else
 										{
@@ -354,6 +365,8 @@ int main(int argc, char* argv[]) {
 											key.MoveY(player.speed, deltaTime);
 											health.MoveY(player.speed, deltaTime);
 											magic.MoveY(player.speed, deltaTime);
+
+											spirits.MoveY(player.speed, deltaTime);
 										}
 										else
 										{
@@ -449,6 +462,8 @@ int main(int argc, char* argv[]) {
 									//Draw Background
 
 									SDL_RenderCopy(renderer, Level, NULL, &bkgdRect);
+
+									spirits.Draw(renderer);
 
 									//draw pickupsbkgd
 									SDL_RenderCopy(renderer, InvBkgd, NULL, &PickupsbkgdRect);

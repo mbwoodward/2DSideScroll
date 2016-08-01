@@ -27,6 +27,13 @@ Pickup::Pickup(SDL_Renderer *renderer, string filePath, int number, float x, flo
 
 		//load image
 		pickup = IMG_LoadTexture(renderer, basePath.c_str());
+	}	else if(number==3)
+	{
+		//Create the pickup file path
+		string basePath = filePath + "spirits.png";
+
+		//load image
+		pickup = IMG_LoadTexture(renderer, basePath.c_str());
 	}
 	//set SDL_Rect x and y for image
 	pickupRect.x = x;
