@@ -73,7 +73,7 @@ public:
 	Mix_Chunk *fire;
 
 	//Turret's creation method
-	Turret(SDL_Renderer *renderer, string filePath, string audioPath, float x, float y);
+	Turret(SDL_Renderer *renderer, string filePath, string audioPath, int turretNum, float x, float y);
 
 	//update
 	void Update(float deltaTime, SDL_Rect tankRect);

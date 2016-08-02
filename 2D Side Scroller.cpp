@@ -126,6 +126,7 @@ int main(int argc, char* argv[]) {
 
 			//*****Secondary-SPIRITS**********
 			Pickup spirits = Pickup(renderer, images_dir.c_str(), 3, 64.0f, 1002.0f);
+			Pickup lights = Pickup(renderer, images_dir.c_str(), 4, 70.0f, 982.0f);
 
 
 			//bool value to control the over sound effect and the buttons
@@ -173,10 +174,36 @@ int main(int argc, char* argv[]) {
 		Mix_Chunk *kingHit = Mix_LoadWAV((audio_dir + "kinghit.wav").c_str());
 
 
-		//******Create Player START**************
+		//******Create Player**************
 		Player player = Player(renderer, 0, images_dir.c_str(),audio_dir.c_str(), 250.0f, 75.0f );
 
+		//********Create Enemy Turrets START**********
+		//*********Enemy Turrets END***********
+		Turret turret1 = Turret(renderer, images_dir.c_str(), audio_dir.c_str(), 0, 850.0f, 550.0f);
+//		Turret turret2 = Turret(renderer, images_dir.c_str(), audio_dir.c_str(), 0, 850.0f, 550.0f);
+//		Turret turret3 = Turret(renderer, images_dir.c_str(), audio_dir.c_str(), 0, 850.0f, 550.0f);
+//		Turret turret4 = Turret(renderer, images_dir.c_str(), audio_dir.c_str(), 0, 850.0f, 550.0f);
+//		Turret turret5 = Turret(renderer, images_dir.c_str(), audio_dir.c_str(), 0, 850.0f, 550.0f);
+//		Turret turret6 = Turret(renderer, images_dir.c_str(), audio_dir.c_str(), 0, 850.0f, 550.0f);
+//		Turret turret7 = Turret(renderer, images_dir.c_str(), audio_dir.c_str(), 0, 850.0f, 550.0f);
+//		Turret turret8 = Turret(renderer, images_dir.c_str(), audio_dir.c_str(), 0, 850.0f, 550.0f);
+//		Turret turret9 = Turret(renderer, images_dir.c_str(), audio_dir.c_str(), 0, 850.0f, 550.0f);
+//		Turret turret10 = Turret(renderer, images_dir.c_str(), audio_dir.c_str(), 0, 850.0f, 550.0f);
+//
+//		Turret SoulWarden = Turret(renderer, images_dir.c_str(), audio_dir.c_str(), 1, 0.0f, 0.0f);
+
+		//********Create Enemy Chase START****************
 		Chase chase1 = Chase(renderer, images_dir.c_str(), audio_dir.c_str(), 400.0f, 200.0f);
+		//Chase chase2 = Chase(renderer, images_dir.c_str(), audio_dir.c_str(), 400.0f, 200.0f);
+		//Chase chase3 = Chase(renderer, images_dir.c_str(), audio_dir.c_str(), 400.0f, 200.0f);
+		//Chase chase4 = Chase(renderer, images_dir.c_str(), audio_dir.c_str(), 400.0f, 200.0f);
+		//Chase chase5 = Chase(renderer, images_dir.c_str(), audio_dir.c_str(), 400.0f, 200.0f);
+		//Chase chase6 = Chase(renderer, images_dir.c_str(), audio_dir.c_str(), 400.0f, 200.0f);
+		//Chase chase7 = Chase(renderer, images_dir.c_str(), audio_dir.c_str(), 400.0f, 200.0f);
+		//Chase chase8 = Chase(renderer, images_dir.c_str(), audio_dir.c_str(), 400.0f, 200.0f);
+		//Chase chase9 = Chase(renderer, images_dir.c_str(), audio_dir.c_str(), 400.0f, 200.0f);
+		//Chase chase10 = Chase(renderer, images_dir.c_str(), audio_dir.c_str(), 400.0f, 200.0f);
+		//*********Create Enemy Chase END**************
 
     // The window is open: could enter program loop here (see SDL_PollEvent())
 			while(!quit)
@@ -228,7 +255,7 @@ int main(int argc, char* argv[]) {
 											level = false;
 											break;
 										}
-										else if(e.type == SDL_KEYDOWN)
+										else if(e.type == SDL_KEYDOWN && e.key.repeat == 0)
 										{
 
 										switch (e.key.keysym.sym)
@@ -292,12 +319,34 @@ int main(int argc, char* argv[]) {
 
 											//move enemy
 											chase1.ChaseMoveX(-player.speed, deltaTime);
+//											chase2.ChaseMoveX(-player.speed, deltaTime);
+//											chase3.ChaseMoveX(-player.speed, deltaTime);
+//											chase4.ChaseMoveX(-player.speed, deltaTime);
+//											chase5.ChaseMoveX(-player.speed, deltaTime);
+//											chase6.ChaseMoveX(-player.speed, deltaTime);
+//											chase7.ChaseMoveX(-player.speed, deltaTime);
+//											chase8.ChaseMoveX(-player.speed, deltaTime);
+//											chase9.ChaseMoveX(-player.speed, deltaTime);
+//											chase10.ChaseMoveX(-player.speed, deltaTime);
+
+											turret1.MoveX(-player.speed, deltaTime);
+//											turret2.MoveX(-player.speed, deltaTime);
+//											turret3.MoveX(-player.speed, deltaTime);
+//											turret4.MoveX(-player.speed, deltaTime);
+//											turret5.MoveX(-player.speed, deltaTime);
+//											turret6.MoveX(-player.speed, deltaTime);
+//											turret7.MoveX(-player.speed, deltaTime);
+//											turret8.MoveX(-player.speed, deltaTime);
+//											turret9.MoveX(-player.speed, deltaTime);
+//											turret10.MoveX(-player.speed, deltaTime);
+
 
 											key.MoveX(-player.speed, deltaTime);
 											health.MoveX(-player.speed, deltaTime);
 											magic.MoveX(-player.speed, deltaTime);
 
 											spirits.MoveX(-player.speed, deltaTime);
+											lights.MoveX(-player.speed, deltaTime);
 										}
 										else
 										{
@@ -314,12 +363,33 @@ int main(int argc, char* argv[]) {
 
 											//move enemy tank
 											chase1.ChaseMoveX(player.speed, deltaTime);
+//											chase2.ChaseMoveX(player.speed, deltaTime);
+//											chase3.ChaseMoveX(player.speed, deltaTime);
+//											chase4.ChaseMoveX(player.speed, deltaTime);
+//											chase5.ChaseMoveX(player.speed, deltaTime);
+//											chase6.ChaseMoveX(player.speed, deltaTime);
+//											chase7.ChaseMoveX(player.speed, deltaTime);
+//											chase8.ChaseMoveX(player.speed, deltaTime);
+//											chase9.ChaseMoveX(player.speed, deltaTime);
+//											chase10.ChaseMoveX(player.speed, deltaTime);
+
+											turret1.MoveX(player.speed, deltaTime);
+//											turret2.MoveX(player.speed, deltaTime);
+//											turret3.MoveX(player.speed, deltaTime);
+//											turret4.MoveX(player.speed, deltaTime);
+//											turret5.MoveX(player.speed, deltaTime);
+//											turret6.MoveX(player.speed, deltaTime);
+//											turret7.MoveX(player.speed, deltaTime);
+//											turret8.MoveX(player.speed, deltaTime);
+//											turret9.MoveX(player.speed, deltaTime);
+//											turret10.MoveX(player.speed, deltaTime);
 
 											key.MoveX(player.speed, deltaTime);
 											health.MoveX(player.speed, deltaTime);
 											magic.MoveX(player.speed, deltaTime);
 
 											spirits.MoveX(player.speed, deltaTime);
+											lights.MoveX(player.speed, deltaTime);
 
 										}
 										else
@@ -339,12 +409,33 @@ int main(int argc, char* argv[]) {
 
 											//move enemy tank
 											chase1.ChaseMoveY(-player.speed, deltaTime);
+//											chase2.ChaseMoveY(-player.speed, deltaTime);
+//											chase3.ChaseMoveY(-player.speed, deltaTime);
+//											chase4.ChaseMoveY(-player.speed, deltaTime);
+//											chase5.ChaseMoveY(-player.speed, deltaTime);
+//											chase6.ChaseMoveY(-player.speed, deltaTime);
+//											chase7.ChaseMoveY(-player.speed, deltaTime);
+//											chase8.ChaseMoveY(-player.speed, deltaTime);
+//											chase9.ChaseMoveY(-player.speed, deltaTime);
+//											chase10.ChaseMoveY(-player.speed, deltaTime);
+
+											turret1.MoveY(-player.speed, deltaTime);
+//											turret2.MoveY(-player.speed, deltaTime);
+//											turret3.MoveY(-player.speed, deltaTime);
+//											turret4.MoveY(-player.speed, deltaTime);
+//											turret5.MoveY(-player.speed, deltaTime);
+//											turret6.MoveY(-player.speed, deltaTime);
+//											turret7.MoveY(-player.speed, deltaTime);
+//											turret8.MoveY(-player.speed, deltaTime);
+//											turret9.MoveY(-player.speed, deltaTime);
+//											turret10.MoveY(-player.speed, deltaTime);
 
 											key.MoveY(-player.speed, deltaTime);
 											health.MoveY(-player.speed, deltaTime);
 											magic.MoveY(-player.speed, deltaTime);
 
 											spirits.MoveY(-player.speed, deltaTime);
+											lights.MoveY(-player.speed, deltaTime);
 								}
 										else
 										{
@@ -361,12 +452,33 @@ int main(int argc, char* argv[]) {
 
 											//move enemy chase
 											chase1.ChaseMoveY(player.speed, deltaTime);
+//											chase2.ChaseMoveY(player.speed, deltaTime);
+//											chase3.ChaseMoveY(player.speed, deltaTime);
+//											chase4.ChaseMoveY(player.speed, deltaTime);
+//											chase5.ChaseMoveY(player.speed, deltaTime);
+//											chase6.ChaseMoveY(player.speed, deltaTime);
+//											chase7.ChaseMoveY(player.speed, deltaTime);
+//											chase8.ChaseMoveY(player.speed, deltaTime);
+//											chase9.ChaseMoveY(player.speed, deltaTime);
+//											chase10.ChaseMoveY(player.speed, deltaTime);
+
+											turret1.MoveY(player.speed, deltaTime);
+											//turret2.MoveY(player.speed, deltaTime);
+											//turret3.MoveY(player.speed, deltaTime);
+											//turret4.MoveY(player.speed, deltaTime);
+											//turret5.MoveY(player.speed, deltaTime);
+											//turret6.MoveY(player.speed, deltaTime);
+											//turret7.MoveY(player.speed, deltaTime);
+											//turret8.MoveY(player.speed, deltaTime);
+											//turret9.MoveY(player.speed, deltaTime);
+											//turret10.MoveY(player.speed, deltaTime);
 
 											key.MoveY(player.speed, deltaTime);
 											health.MoveY(player.speed, deltaTime);
 											magic.MoveY(player.speed, deltaTime);
 
 											spirits.MoveY(player.speed, deltaTime);
+											lights.MoveY(player.speed, deltaTime);
 										}
 										else
 										{
@@ -376,6 +488,8 @@ int main(int argc, char* argv[]) {
 
 									//UDPATE ENEMIES*************
 									//chase1.Update(deltaTime, player.posRect);
+
+									turret1.Update(deltaTime, player.posRect);
 
 									//check for hit from tanks
 									//1
@@ -465,6 +579,8 @@ int main(int argc, char* argv[]) {
 
 									spirits.Draw(renderer);
 
+									lights.Draw(renderer);
+
 									//draw pickupsbkgd
 									SDL_RenderCopy(renderer, InvBkgd, NULL, &PickupsbkgdRect);
 
@@ -489,6 +605,8 @@ int main(int argc, char* argv[]) {
 
 									//Draw player1 tank
 									player.Draw(renderer);
+
+									turret1.Draw(renderer);
 
 									chase1.Draw(renderer);
 

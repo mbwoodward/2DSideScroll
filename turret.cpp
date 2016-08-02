@@ -1,16 +1,16 @@
 #include "turret.h"
 
 //Turret creation method
-Turret::Turret(SDL_Renderer *renderer, string filePath, string audioPath, float x, float y)
+Turret::Turret(SDL_Renderer *renderer, string filePath, string audioPath, int turretNum, float x, float y)
 {
 	//activate the turret
 	active = true;
 
-	health = 1200;
-
 	//fire sound
 	fire = Mix_LoadWAV((audioPath + "fire.wav").c_str());
 
+	if(turretNum == 0)
+	{
 	//Create the turret base file path
 	string basePath = filePath + "turretbase.png";
 
@@ -23,6 +23,25 @@ Turret::Turret(SDL_Renderer *renderer, string filePath, string audioPath, float 
 	//load image into texture
 	tBarrel = IMG_LoadTexture(renderer, barrelPath.c_str());
 
+	health = 10;
+	}
+	else if(turretNum == 1)
+	{
+	//Create the turret base file path
+	string basePath = filePath + "turretbase.png";
+
+	//load image into texture
+	tBase = IMG_LoadTexture(renderer, basePath.c_str());
+
+	//Create turret barrel file path
+	string barrelPath = filePath + "turret.png";
+
+	//load image into texture
+	tBarrel = IMG_LoadTexture(renderer, barrelPath.c_str());
+
+	health = 20;
+	}
+
 	//set the SDL_Rect X and Y for base
 	baseRect.x = x;
 	baseRect.y = y;
@@ -34,7 +53,7 @@ Turret::Turret(SDL_Renderer *renderer, string filePath, string audioPath, float 
 	baseRect.h = h;
 
 	//set SDL_Rect X and Y for barrel
-	barrelRect.x = x;
+	barrelRect.x = x + 23;
 	barrelRect.y = y;
 
 	//get width and height
@@ -94,22 +113,24 @@ void Turret::MoveY(float tankSpeed, float deltaTime)
 //Turret Draw
 void Turret::Draw(SDL_Renderer *renderer)
 {
-	//draw the turret's bullets
-	for (int i = 0; i < bulletList.size(); i++)
-	{
-		//check too see active
-		if(bulletList[i].active)
-		{
-			//Draw
-			bulletList[i].Draw(renderer);
-		}
-	}
+
 
 	//Draw base
 	SDL_RenderCopy(renderer, tBase, NULL, &baseRect);
 
 	//Draw barrel
 	SDL_RenderCopyEx(renderer, tBarrel, NULL, &barrelRect, turretangle, &center, SDL_FLIP_NONE);
+
+	//draw the turret's bullets
+		for (int i = 0; i < bulletList.size(); i++)
+		{
+			//check too see active
+			if(bulletList[i].active)
+			{
+				//Draw
+				bulletList[i].Draw(renderer);
+			}
+		}
 
 }
 
