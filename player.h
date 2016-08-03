@@ -42,6 +42,9 @@ public:
 
 	bool flip;
 
+	int pVelX;
+	int pVelY;
+
 	//tank hit by eTank
 	void chaseHit();
 

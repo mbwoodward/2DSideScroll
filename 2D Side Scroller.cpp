@@ -11,6 +11,7 @@
 #include "chase.h"
 #include "pickup.h"
 #include "turret.h"
+#include "cursor.h"
 
 
 
@@ -205,6 +206,11 @@ int main(int argc, char* argv[]) {
 		//Chase chase10 = Chase(renderer, images_dir.c_str(), audio_dir.c_str(), 400.0f, 200.0f);
 		//*********Create Enemy Chase END**************
 
+		//********CREATE CURSOR BEGIN**********
+		Cursor cursor(renderer, images_dir.c_str(), 300.0f, 50.0f);
+		//********CREATE CURSOR FINISH*********
+
+
     // The window is open: could enter program loop here (see SDL_PollEvent())
 			while(!quit)
 			{
@@ -255,7 +261,7 @@ int main(int argc, char* argv[]) {
 											level = false;
 											break;
 										}
-										else if(e.type == SDL_KEYDOWN && e.key.repeat == 0)
+										else if(e.type == SDL_KEYDOWN)
 										{
 
 										switch (e.key.keysym.sym)
@@ -265,6 +271,19 @@ int main(int argc, char* argv[]) {
 											level = false;
 											break;
 
+										case SDLK_UP:
+											player.posRect.y -= 15;
+											break;
+										case SDLK_DOWN:
+											player.posRect.y += 15;
+											break;
+										case SDLK_LEFT:
+											player.posRect.x -= 15;
+											break;
+										case SDLK_RIGHT:
+											player.posRect.x += 15;
+											break;
+
 										case SDLK_w:
 
 											player.posRect.y -= 10;
@@ -272,22 +291,24 @@ int main(int argc, char* argv[]) {
 
 										case SDLK_s:
 
-											player.posRect.y += 10;
+											player.posRect.y += 15;
 											break;
 
 										case SDLK_d:
 											player.flip = false;
-											player.posRect.x += 10;
+											player.posRect.x += 15;
 											break;
 
 										case SDLK_a:
 											player.flip = true;
-											player.posRect.x -= 10;
+											player.posRect.x -= 15;
 											break;
 										}//END SWITCH KEYDOWN
 											break;
 
-										}else if(e.type == SDL_MOUSEBUTTONDOWN)
+										}
+										else if(e.type == SDL_MOUSEBUTTONDOWN)
+
 										{
 											if(player.playerMagic > 0)
 											{
@@ -296,7 +317,7 @@ int main(int argc, char* argv[]) {
 											}
 										}else if(e.type == SDL_MOUSEMOTION)
 										{
-
+											cursor.MouseMotion(e);
 										}
 
 									}// POLL EVENT
@@ -305,6 +326,7 @@ int main(int argc, char* argv[]) {
 									//update player 1 tank
 									player.Update(deltaTime);
 
+									cursor.Update(deltaTime);
 
 
 									//move background
@@ -520,6 +542,35 @@ int main(int argc, char* argv[]) {
 										}
 									}
 
+									//check for hit from king
+													//1
+													for (int i = 0; i < turret1.bulletList.size(); i++)
+													{
+														if (SDL_HasIntersection(&player.posRect, &turret1.bulletList[i].posRect))
+														{
+															turret1.bulletList[i].Reset();
+															player.turretHit();
+															//if(player.playerHealth <= 0)
+															//{
+															//	level = false;
+															//	gameState = LOSE;
+															//}
+														}
+													}
+
+													//check if player hit turret
+													for (int i = 0; i < player.bulletList.size(); i++)
+													{
+														//turret1
+														if (SDL_HasIntersection(&turret1.baseRect, &player.bulletList[i].posRect))
+														{
+															Mix_PlayChannel(-1, kingHit, 0);
+															player.bulletList[i].Reset();
+															turret1.RemoveHealth();
+														}
+													}
+
+
 									//key
 								if (SDL_HasIntersection(&player.posRect, &key.pickupRect))
 									{
@@ -610,8 +661,13 @@ int main(int argc, char* argv[]) {
 
 									chase1.Draw(renderer);
 
+									cursor.Draw(renderer);
+
 									// SDL Render present
 									SDL_RenderPresent(renderer);
+
+
+									SDL_Delay(16);
 								}//END LEVEL LOOP
 						}//END CASE LEVEL
 

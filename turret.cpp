@@ -134,10 +134,10 @@ void Turret::Draw(SDL_Renderer *renderer)
 
 }
 
-void Turret::RemoveHealth(int healthLoss)
+void Turret::RemoveHealth()
 {
 
-	health = health - healthLoss;
+	health --;
 
 	if(health <= 0)
 	{
@@ -184,7 +184,6 @@ void Turret::Update(float deltaTime, SDL_Rect tankRect)
 			//check too see active
 			if(bulletList[i].active)
 			{
-				bulletType = rand() % 3;
 				//Draw
 				bulletList[i].Update(deltaTime);
 			}

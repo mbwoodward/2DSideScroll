@@ -81,7 +81,7 @@ public:
 	//Draw
 	void Draw(SDL_Renderer *renderer);
 
-	void RemoveHealth(int healthLoss);
+	void RemoveHealth();
 
 	//reset
 	void Reset();

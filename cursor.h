@@ -30,9 +30,19 @@ public:
 
 	string cursorPath;
 
-	Cursor(SDL_Renderer *renderer, string filePath, string audioPath, float x, float y);
+	int mouseX, mouseY, oldMouseX, oldMouseY;
 
-	void MouseMotion(const SDL_MouseButtonEvent event);
+	int cursorSpeed;
+
+	int xDir, yDir;
+
+	float pos_X, pos_Y;
+
+	Cursor(SDL_Renderer *renderer, string filePath, float x, float y);
+
+	void MouseMotion(const SDL_Event event);
 
 	void Draw(SDL_Renderer *renderer);
+
+	void Update(float deltaTime);
 };

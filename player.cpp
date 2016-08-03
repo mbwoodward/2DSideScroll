@@ -34,7 +34,9 @@ Player::Player(SDL_Renderer *renderer, int pNum, string filePath, string audioPa
 	playerNum = pNum;
 
 	//set float for player speed
-	speed = 200.0f;
+	speed = 100.0f;
+	pVelX = 0;
+	pVelY = 0;
 
 	//tank firing sound
 	fire = Mix_LoadWAV((audioPath + "throw.wav").c_str());
