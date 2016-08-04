@@ -25,25 +25,6 @@ void Cursor::MouseMotion(const SDL_Event event)
 	if(event.type == SDL_MOUSEMOTION)
 	{
 		SDL_GetMouseState(&mouseX, &mouseY);
-
-		oldMouseX = mouseX;
-		oldMouseY = mouseY;
-
-		if(mouseX > oldMouseX)
-		{
-			xDir = 1;
-		}else if(mouseX < oldMouseX)
-		{
-			xDir = -1;
-		}
-		if(mouseY > oldMouseY)
-		{
-			yDir = 1;
-		}else if(mouseY < oldMouseY)
-		{
-			yDir = -1;
-		}
-
 	}
 }
 
@@ -55,14 +36,9 @@ void Cursor::Draw(SDL_Renderer *renderer)
 //update cursor on screen
 void Cursor::Update(float deltaTime)
 {
-
-	cout << "mouseX: " << mouseX << endl;
-	cout << "mouseY: " << mouseY << endl;
-	cout << "old X: " << oldMouseX << endl;
-	cout << "old Y: " << oldMouseY << endl;
 	//Update cursor
-	pos_X += (cursorSpeed * xDir) * deltaTime;
-	pos_Y += (cursorSpeed * yDir) * deltaTime;
+	pos_X = mouseX;
+	pos_Y = mouseY;
 
 	//assign to SDL_Rect ints X and Y
 	cursorRect.x = (int) (pos_X + 0.5f);

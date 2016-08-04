@@ -28,8 +28,8 @@ PlayerBullet::PlayerBullet(SDL_Renderer *renderer, string filePath, float x, flo
 
 	//initialize the direction vars for the bullet
 	//no X movement, no Y movement
-	//xDir = dirX;
-	//yDir = dirY;
+	xDir = dirX;
+	yDir = dirY;
 }
 
 void PlayerBullet::Reset()
@@ -53,9 +53,10 @@ void PlayerBullet::Draw(SDL_Renderer *renderer)
 //Bullet Update method
 void PlayerBullet::Update(float deltaTime)
 {
+
 		//Adjust position floats based on speed, direction (-1 for up), and deltaTime
-		//pos_X += (speed * xDir) * deltaTime;
-		//pos_Y += (speed * yDir) * deltaTime;
+		pos_X += (speed * xDir) * deltaTime;
+		pos_Y += (speed * yDir) * deltaTime;
 	float radians = (tankangle * 3.14)/180;
 
 	float move_x = speed * cos(radians);

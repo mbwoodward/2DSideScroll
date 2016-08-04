@@ -32,6 +32,7 @@ public:
 	//movement direction values
 	float xDir, yDir;
 
+
 	//bullet speed
 	float speed;
 

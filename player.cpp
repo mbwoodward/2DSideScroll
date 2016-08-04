@@ -91,15 +91,20 @@ Player::Player(SDL_Renderer *renderer, int pNum, string filePath, string audioPa
 	for (int i = 0; i < 10; i++)
 	{
 		//create the bullet and move offscreen, out of the game play area
-		PlayerBullet tmpBullet(renderer, bulletPath, -1000, -1000, 0, 0);
+		PlayerBullet tmpBullet(renderer, bulletPath, -1000, -1000,0,0);
 
 		//add to bulletList
 		bulletList.push_back(tmpBullet);
 	}
 }
 
-void Player::Update(float deltaTime)
+void Player::Update(float deltaTime, SDL_Rect target)
 {
+
+	//get angle between the tank and turret
+		x = (target.x + (target.w/2)) - (posRect.x + (posRect.w/2));
+		y = (target.y + (target.h/2)) - (posRect.y + (posRect.h/2));
+		fireangle = atan2(y,x) * 180 / 3.14;
 
 	//check for gamepad input
 	if(Xvalue != 0 || Yvalue != 0)
@@ -266,28 +271,41 @@ void Player::CreateBullet()
 
 			//use some math in the x position to get the bullet close to
 			//the center of the player using player width
+			if (flip == false)
+			{
 			bulletList[i].posRect.x = (posRect.x + (posRect.w));
 			bulletList[i].posRect.y = (posRect.y + (posRect.h / 3));
 
 			//finishing aligning to the player center using the texture width
 			bulletList[i].posRect.x = bulletList[i].posRect.x - (bulletList[i].posRect.w / 2);
 			bulletList[i].posRect.y = bulletList[i].posRect.y - (bulletList[i].posRect.h / 2);
+			}
+			else
+			{
+				bulletList[i].posRect.x = (posRect.x);
+				bulletList[i].posRect.y = (posRect.y + (posRect.h/3));
+
+				//finishing aligning to the player center using the texture width
+				bulletList[i].posRect.x = bulletList[i].posRect.x - (bulletList[i].posRect.w / 2);
+				bulletList[i].posRect.y = bulletList[i].posRect.y - (bulletList[i].posRect.h / 2);
+			}
 
 			//Set the x and y positions of the bullet's float positions
 			bulletList[i].pos_X = bulletList[i].posRect.x;
 			bulletList[i].pos_Y = bulletList[i].posRect.y;
 
+
 			//if the tank is moving fire in the direction
 			if (Xvalue != 0 || Yvalue != 0)
 			{
 				//Set the x and y positions of the bullet's float positions
-				bulletList[i].tankangle = tankangle;
+				bulletList[i].tankangle = fireangle;
 			}
 			else
 			{
 				//if the tank is not moving, fire in the direction currently facing
 				//Set the x and y positions of the bullet's float positions
-				bulletList[i].tankangle = oldAngle;
+				bulletList[i].tankangle = fireangle;
 			}
 
 			//once bullet is found, break out of loop

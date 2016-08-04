@@ -175,8 +175,12 @@ int main(int argc, char* argv[]) {
 		Mix_Chunk *kingHit = Mix_LoadWAV((audio_dir + "kinghit.wav").c_str());
 
 
+		//********CREATE CURSOR BEGIN**********
+		Cursor cursor(renderer, images_dir.c_str(), 300.0f, 50.0f);
+		//********CREATE CURSOR FINISH*********
+
 		//******Create Player**************
-		Player player = Player(renderer, 0, images_dir.c_str(),audio_dir.c_str(), 250.0f, 75.0f );
+		Player player = Player(renderer, 0, images_dir.c_str(),audio_dir.c_str(), 250.0f, 75.0f);
 
 		//********Create Enemy Turrets START**********
 		//*********Enemy Turrets END***********
@@ -206,9 +210,6 @@ int main(int argc, char* argv[]) {
 		//Chase chase10 = Chase(renderer, images_dir.c_str(), audio_dir.c_str(), 400.0f, 200.0f);
 		//*********Create Enemy Chase END**************
 
-		//********CREATE CURSOR BEGIN**********
-		Cursor cursor(renderer, images_dir.c_str(), 300.0f, 50.0f);
-		//********CREATE CURSOR FINISH*********
 
 
     // The window is open: could enter program loop here (see SDL_PollEvent())
@@ -224,6 +225,7 @@ int main(int argc, char* argv[]) {
 								{
 									//alreadyOver = false;
 									level = true;
+									SDL_ShowCursor(0);
 
 								/*	if (Mix_PlayingMusic())
 									{
@@ -270,6 +272,10 @@ int main(int argc, char* argv[]) {
 											quit = true;
 											level = false;
 											break;
+										case SDLK_ESCAPE:
+											quit = true;
+											level = false;
+											break;
 
 										case SDLK_UP:
 											player.posRect.y -= 15;
@@ -286,7 +292,7 @@ int main(int argc, char* argv[]) {
 
 										case SDLK_w:
 
-											player.posRect.y -= 10;
+											player.posRect.y -= 15;
 											break;
 
 										case SDLK_s:
@@ -295,12 +301,10 @@ int main(int argc, char* argv[]) {
 											break;
 
 										case SDLK_d:
-											player.flip = false;
 											player.posRect.x += 15;
 											break;
 
 										case SDLK_a:
-											player.flip = true;
 											player.posRect.x -= 15;
 											break;
 										}//END SWITCH KEYDOWN
@@ -318,13 +322,20 @@ int main(int argc, char* argv[]) {
 										}else if(e.type == SDL_MOUSEMOTION)
 										{
 											cursor.MouseMotion(e);
+											if(cursor.mouseX > player.posRect.x + player.posRect.w/2)
+											{
+												player.flip = false;
+											}else if(cursor.mouseX < player.posRect.x + player.posRect.w/2)
+											{
+												player.flip = true;
+											}
 										}
 
 									}// POLL EVENT
 
 									//UPDATE SECTION
 									//update player 1 tank
-									player.Update(deltaTime);
+									player.Update(deltaTime, cursor.cursorRect);
 
 									cursor.Update(deltaTime);
 
@@ -340,7 +351,7 @@ int main(int argc, char* argv[]) {
 											bkgdRect.x = (int)(X_pos + 0.5f);
 
 											//move enemy
-											chase1.ChaseMoveX(-player.speed, deltaTime);
+											//chase1.ChaseMoveX(-player.speed, deltaTime);
 //											chase2.ChaseMoveX(-player.speed, deltaTime);
 //											chase3.ChaseMoveX(-player.speed, deltaTime);
 //											chase4.ChaseMoveX(-player.speed, deltaTime);
@@ -363,12 +374,12 @@ int main(int argc, char* argv[]) {
 //											turret10.MoveX(-player.speed, deltaTime);
 
 
-											key.MoveX(-player.speed, deltaTime);
-											health.MoveX(-player.speed, deltaTime);
-											magic.MoveX(-player.speed, deltaTime);
+											//key.MoveX(-player.speed, deltaTime);
+											//health.MoveX(-player.speed, deltaTime);
+											//magic.MoveX(-player.speed, deltaTime);
 
-											spirits.MoveX(-player.speed, deltaTime);
-											lights.MoveX(-player.speed, deltaTime);
+											//spirits.MoveX(-player.speed, deltaTime);
+											//lights.MoveX(-player.speed, deltaTime);
 										}
 										else
 										{
@@ -384,7 +395,7 @@ int main(int argc, char* argv[]) {
 											bkgdRect.x = (int)(X_pos + 0.5f);
 
 											//move enemy tank
-											chase1.ChaseMoveX(player.speed, deltaTime);
+											//chase1.ChaseMoveX(player.speed, deltaTime);
 //											chase2.ChaseMoveX(player.speed, deltaTime);
 //											chase3.ChaseMoveX(player.speed, deltaTime);
 //											chase4.ChaseMoveX(player.speed, deltaTime);
@@ -406,12 +417,12 @@ int main(int argc, char* argv[]) {
 //											turret9.MoveX(player.speed, deltaTime);
 //											turret10.MoveX(player.speed, deltaTime);
 
-											key.MoveX(player.speed, deltaTime);
-											health.MoveX(player.speed, deltaTime);
-											magic.MoveX(player.speed, deltaTime);
+											//key.MoveX(player.speed, deltaTime);
+											//health.MoveX(player.speed, deltaTime);
+											//magic.MoveX(player.speed, deltaTime);
 
-											spirits.MoveX(player.speed, deltaTime);
-											lights.MoveX(player.speed, deltaTime);
+											//spirits.MoveX(player.speed, deltaTime);
+											//lights.MoveX(player.speed, deltaTime);
 
 										}
 										else
@@ -430,7 +441,7 @@ int main(int argc, char* argv[]) {
 											bkgdRect.y = (int)(Y_pos + 0.5f);
 
 											//move enemy tank
-											chase1.ChaseMoveY(-player.speed, deltaTime);
+											//chase1.ChaseMoveY(-player.speed, deltaTime);
 //											chase2.ChaseMoveY(-player.speed, deltaTime);
 //											chase3.ChaseMoveY(-player.speed, deltaTime);
 //											chase4.ChaseMoveY(-player.speed, deltaTime);
@@ -452,12 +463,12 @@ int main(int argc, char* argv[]) {
 //											turret9.MoveY(-player.speed, deltaTime);
 //											turret10.MoveY(-player.speed, deltaTime);
 
-											key.MoveY(-player.speed, deltaTime);
-											health.MoveY(-player.speed, deltaTime);
-											magic.MoveY(-player.speed, deltaTime);
+											//key.MoveY(-player.speed, deltaTime);
+											//health.MoveY(-player.speed, deltaTime);
+											//magic.MoveY(-player.speed, deltaTime);
 
-											spirits.MoveY(-player.speed, deltaTime);
-											lights.MoveY(-player.speed, deltaTime);
+											//spirits.MoveY(-player.speed, deltaTime);
+											//lights.MoveY(-player.speed, deltaTime);
 								}
 										else
 										{
@@ -473,7 +484,7 @@ int main(int argc, char* argv[]) {
 											bkgdRect.y = (int)(Y_pos + 0.5f);
 
 											//move enemy chase
-											chase1.ChaseMoveY(player.speed, deltaTime);
+											//chase1.ChaseMoveY(player.speed, deltaTime);
 //											chase2.ChaseMoveY(player.speed, deltaTime);
 //											chase3.ChaseMoveY(player.speed, deltaTime);
 //											chase4.ChaseMoveY(player.speed, deltaTime);
@@ -495,12 +506,12 @@ int main(int argc, char* argv[]) {
 											//turret9.MoveY(player.speed, deltaTime);
 											//turret10.MoveY(player.speed, deltaTime);
 
-											key.MoveY(player.speed, deltaTime);
-											health.MoveY(player.speed, deltaTime);
-											magic.MoveY(player.speed, deltaTime);
+											//key.MoveY(player.speed, deltaTime);
+											//health.MoveY(player.speed, deltaTime);
+											//magic.MoveY(player.speed, deltaTime);
 
-											spirits.MoveY(player.speed, deltaTime);
-											lights.MoveY(player.speed, deltaTime);
+											//spirits.MoveY(player.speed, deltaTime);
+											//lights.MoveY(player.speed, deltaTime);
 										}
 										else
 										{
@@ -515,7 +526,7 @@ int main(int argc, char* argv[]) {
 
 									//check for hit from tanks
 									//1
-									if (SDL_HasIntersection(&player.posRect, &chase1.chaseRect))
+									/*if (SDL_HasIntersection(&player.posRect, &chase1.chaseRect))
 									{
 										player.chaseHit();
 										//if (player.playerHealth <= 0)
@@ -540,9 +551,9 @@ int main(int argc, char* argv[]) {
 												chase1.RemoveHealth();
 											}
 										}
-									}
+									}		*/
 
-									//check for hit from king
+									//check for hit from turret
 													//1
 													for (int i = 0; i < turret1.bulletList.size(); i++)
 													{
@@ -564,24 +575,14 @@ int main(int argc, char* argv[]) {
 														//turret1
 														if (SDL_HasIntersection(&turret1.baseRect, &player.bulletList[i].posRect))
 														{
-															Mix_PlayChannel(-1, kingHit, 0);
+															//Mix_PlayChannel(-1, kingHit, 0);
 															player.bulletList[i].Reset();
 															turret1.RemoveHealth();
 														}
 													}
 
-
-									//key
-								if (SDL_HasIntersection(&player.posRect, &key.pickupRect))
-									{
-									//	Mix_PlayChannel(-1, pickupSound, 0);
-										key.active = false;
-										key.pickupRect.x = -5000;
-										key.pickupRect.y = -5000;
-										hasKey = true;
-									}
 								//key
-							if (SDL_HasIntersection(&player.posRect, &key.pickupRect))
+			/*				if (SDL_HasIntersection(&player.posRect, &key.pickupRect))
 								{
 								//	Mix_PlayChannel(-1, pickupSound, 0);
 									key.active = false;
@@ -589,7 +590,7 @@ int main(int argc, char* argv[]) {
 									key.pickupRect.y = -5000;
 									hasKey = true;
 								}
-							//key
+							//health
 						if (SDL_HasIntersection(&player.posRect, &health.pickupRect))
 							{
 							//	Mix_PlayChannel(-1, pickupSound, 0);
@@ -604,6 +605,7 @@ int main(int argc, char* argv[]) {
 								player.healthR.w = player.playerHealth/player.maxHealth * 147;
 
 							}
+							//magic
 						if (SDL_HasIntersection(&player.posRect, &magic.pickupRect))
 							{
 							//	Mix_PlayChannel(-1, pickupSound, 0);
@@ -617,7 +619,7 @@ int main(int argc, char* argv[]) {
 								}
 								player.magicR.w = player.playerMagic/player.maxMagic * 147;
 
-							}
+							}	*/
 
 
 									//DRAW SECTION
@@ -628,30 +630,30 @@ int main(int argc, char* argv[]) {
 
 									SDL_RenderCopy(renderer, Level, NULL, &bkgdRect);
 
-									spirits.Draw(renderer);
+									//spirits.Draw(renderer);
 
-									lights.Draw(renderer);
+									//lights.Draw(renderer);
 
 									//draw pickupsbkgd
 									SDL_RenderCopy(renderer, InvBkgd, NULL, &PickupsbkgdRect);
 
 									if(hasKey == true)
 									{
-										SDL_RenderCopy(renderer, keyGUI, NULL, &keypos);
+										//SDL_RenderCopy(renderer, keyGUI, NULL, &keypos);
 									}
 
 									//Draw key
 									if (key.active)
 									{
-										key.Draw(renderer);
+										//key.Draw(renderer);
 									}
 									if (health.active)
 									{
-										health.Draw(renderer);
+										//health.Draw(renderer);
 									}
 									if (magic.active)
 									{
-										magic.Draw(renderer);
+										//magic.Draw(renderer);
 									}
 
 									//Draw player1 tank
@@ -659,7 +661,7 @@ int main(int argc, char* argv[]) {
 
 									turret1.Draw(renderer);
 
-									chase1.Draw(renderer);
+									//chase1.Draw(renderer);
 
 									cursor.Draw(renderer);
 

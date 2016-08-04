@@ -45,6 +45,8 @@ public:
 	int pVelX;
 	int pVelY;
 
+	SDL_Rect targetPos;
+
 	//tank hit by eTank
 	void chaseHit();
 
@@ -90,7 +92,7 @@ public:
 	SDL_Point center;
 
 	//keep the last angle so the player can fire in the correct direction
-	float oldAngle, tankangle;
+	float oldAngle, tankangle, fireangle;
 
 	//audio sound effect - CHUNK
 	Mix_Chunk *fire;
@@ -105,7 +107,7 @@ public:
 	void OnMouseButton(const SDL_MouseButtonEvent event);
 
 	//update the player using the passed in deltaTime
-	void Update(float deltaTime);
+	void Update(float deltaTime, SDL_Rect target);
 
 	//draw the player main's passed in renderer
 	void Draw(SDL_Renderer *renderer);
