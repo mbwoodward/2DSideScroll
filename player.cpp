@@ -103,44 +103,8 @@ void Player::Update(float deltaTime, SDL_Rect target)
 
 	//get angle between the tank and turret
 		x = (target.x + (target.w/2)) - (posRect.x + (posRect.w/2));
-		y = (target.y + (target.h/2)) - (posRect.y + (posRect.h/2));
+		y = (target.y + (target.h)) - (posRect.y + (posRect.h/2));
 		fireangle = atan2(y,x) * 180 / 3.14;
-
-	//check for gamepad input
-	if(Xvalue != 0 || Yvalue != 0)
-	{
-		//get the angle that tank needs to face
-		//x = posRect.x - xDir;
-		//y = posRect.y - yDir;
-		tankangle = atan2(Yvalue, Xvalue) * 180/3.14;
-
-		//set this as the old angle and dir some the player/tank can shoot when stopped
-		oldAngle = tankangle;
-		//xDirOld = xDir;
-		//yDirOld = yDir;
-
-		float radians = (tankangle * 3.14)/180;
-
-		float move_x = speed * cos(radians);
-		float move_y = speed * sin(radians);
-
-		//Update floats for precision loss
-		pos_X += (move_x) * deltaTime;
-		pos_Y += (move_y) * deltaTime;
-
-		//Update player position with code to account for precision loss
-		posRect.x = (int)(pos_X + 0.5f);
-		posRect.y = (int)(pos_Y + 0.5f);
-
-	}else
-	{
-		tankangle = oldAngle;
-	}
-
-
-	//Adjust position floats based on speed, direction of joystick axis and deltaTime
-	pos_X += (speed * xDir) * deltaTime;
-	pos_Y += (speed * yDir) * deltaTime;
 
 	//check if the player is off screen and set it back
 	if(posRect.x < 0)
