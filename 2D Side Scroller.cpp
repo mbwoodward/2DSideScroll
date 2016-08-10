@@ -64,6 +64,12 @@ int lastTime = 0;
 
 int w, h;
 
+// The velocity of the player
+int pVelX = 0;
+int pVelY = 0;
+
+bool keyup = false, keydown = false, keyleft = false, keyright = false;
+
 int main(int argc, char* argv[]) {
 
 	//**********Create the SDL Window-START**********
@@ -156,8 +162,8 @@ int main(int argc, char* argv[]) {
 
 
 			    // set the X,Y,W, and H for the Rectangle
-			    Players1NPos.x=25;
-			    Players1NPos.y=266;
+			    Players1NPos.x=600;
+			    Players1NPos.y=768/2;
 
 			    //query w and h
 			    SDL_QueryTexture(playN,NULL,NULL,&w,&h);
@@ -184,14 +190,6 @@ int main(int argc, char* argv[]) {
 				SDL_Rect Players1ANPos;
 				SDL_Rect Players1AOPos;
 
-
-				// set the X,Y,W, and H for the Rectangle
-				Players1ANPos.x=25;
-				Players1ANPos.y=266;
-
-				Players1AOPos.x=25;
-				Players1AOPos.y=266;
-
 				//query w and h
 				SDL_QueryTexture(playAN,NULL,NULL,&w,&h);
 				Players1ANPos.w = w;
@@ -200,6 +198,15 @@ int main(int argc, char* argv[]) {
 				SDL_QueryTexture(playAO,NULL,NULL,&w,&h);
 				Players1AOPos.w = w;
 				Players1AOPos.h = h;
+
+				// set the X,Y,W, and H for the Rectangle
+				Players1ANPos.x=1024/2-Players1ANPos.w/2;
+				Players1ANPos.y=675;
+
+				Players1AOPos.x=1024/2-Players1AOPos.w/2;
+				Players1AOPos.y=667;
+
+
 
 			    //********PLAY AGAIN - END******
 
@@ -234,15 +241,14 @@ int main(int argc, char* argv[]) {
 				  // create SDL Rectangle for the title graphic
 				  SDL_Rect winTextPos;
 
-
-				  // set the X,Y,W, and H for the Rectangle
-				  winTextPos.x=280;
-				  winTextPos.y=100;
-
 				  //query w and h
 				  SDL_QueryTexture(winText, NULL, NULL, &w, &h);
 				  winTextPos.w = w;
 				  winTextPos.h = h;
+
+				  // set the X,Y,W, and H for the Rectangle
+				  winTextPos.x=1024/2-winTextPos.w/2;
+				  winTextPos.y=100;
 
 				  string LoseTextPath = images_dir + "loseText.png";
 
@@ -252,14 +258,14 @@ int main(int argc, char* argv[]) {
 				  SDL_Rect loseTextPos;
 
 
-				  // set the X,Y,W, and H for the Rectangle
-				  loseTextPos.x=280;
-				  loseTextPos.y=100;
-
 				  //query w and h
 				  SDL_QueryTexture(loseText, NULL, NULL, &w, &h);
 				  loseTextPos.w = w;
 				  loseTextPos.h = h;
+
+				  // set the X,Y,W, and H for the Rectangle
+				  loseTextPos.x=1024/2-loseTextPos.w/2;
+				  loseTextPos.y=100;
 
 
 			    //***************** Create Menus - END *****************
@@ -297,7 +303,7 @@ int main(int argc, char* argv[]) {
 			bool quit = false, level = false, menu = false, win = false, lose = false, players1Over = false, players1Pressed = false;
 
 			// set up the initial state
-			GameState gameState = MENU;
+			GameState gameState = LOSE;
 
 	//////AUDIO And STUFF////////
 	//Open Audio Channel
@@ -546,7 +552,7 @@ int main(int argc, char* argv[]) {
 								level = false;
 								break;
 							}
-							else if(e.type == SDL_KEYDOWN)
+							else if(e.type == SDL_KEYDOWN && e.key.repeat == 0)
 							{
 
 							switch (e.key.keysym.sym)
@@ -561,38 +567,107 @@ int main(int argc, char* argv[]) {
 								break;
 
 							case SDLK_UP:
-								player.posRect.y -= 15;
+								//player.posRect.y -= 15;
+								pVelY -= player.speed;
+								keyup = true;
 								break;
 							case SDLK_DOWN:
-								player.posRect.y += 15;
+								//player.posRect.y += 15;
+								pVelY += player.speed;
+								keydown = true;
 								break;
 							case SDLK_LEFT:
-								player.posRect.x -= 15;
+								//player.posRect.x -= 15;
+								pVelX -= player.speed;
+								keyleft = true;
 								break;
 							case SDLK_RIGHT:
-								player.posRect.x += 15;
+								//player.posRect.x += 15;
+								pVelX += player.speed;
+								keyright = true;
 								break;
 
 							case SDLK_w:
 
-								player.posRect.y -= 15;
+								//player.posRect.y -= 15;
+								pVelY -= player.speed;
+								keyup = true;
 								break;
 
 							case SDLK_s:
 
-								player.posRect.y += 15;
+								//player.posRect.y += 15;
+								pVelY += player.speed;
+								keydown = true;
 								break;
 
 							case SDLK_d:
-								player.posRect.x += 15;
+								//player.posRect.x += 15;
+								pVelX += player.speed;
+								keyright = true;
 								break;
 
 							case SDLK_a:
-								player.posRect.x -= 15;
+								//player.posRect.x -= 15;
+								pVelX -= player.speed;
+								keyleft = true;
 								break;
 							}//END SWITCH KEYDOWN
 								break;
 
+							}
+							else if(e.type == SDL_KEYUP && e.key.repeat == 0)
+							{
+								switch (e.key.keysym.sym)
+								{
+								case SDLK_UP:
+									//player.posRect.y -= 15;
+									pVelY += player.speed;
+									keyup = false;
+									break;
+								case SDLK_DOWN:
+									//player.posRect.y += 15;
+									pVelY -= player.speed;
+									keydown = false;
+									break;
+								case SDLK_LEFT:
+									//player.posRect.x -= 15;
+									pVelX += player.speed;
+									keyleft = false;
+									break;
+								case SDLK_RIGHT:
+									//player.posRect.x += 15;
+									pVelX -= player.speed;
+									keyright = false;
+									break;
+
+								case SDLK_w:
+
+									//player.posRect.y -= 15;
+									pVelY += player.speed;
+									keyup = false;
+									break;
+
+								case SDLK_s:
+
+									//player.posRect.y += 15;
+									pVelY -= player.speed;
+									keydown = false;
+									break;
+
+								case SDLK_d:
+									//player.posRect.x += 15;
+									pVelX -= player.speed;
+									keyright = false;
+									break;
+
+								case SDLK_a:
+									//player.posRect.x -= 15;
+									pVelX += player.speed;
+									keyleft = false;
+									break;
+								}//END SWITCH KEYUP
+								break;
 							}
 							else if(e.type == SDL_MOUSEBUTTONDOWN)
 
@@ -605,26 +680,30 @@ int main(int argc, char* argv[]) {
 							}else if(e.type == SDL_MOUSEMOTION)
 							{
 								cursor.MouseMotion(e);
-								if(cursor.mouseX > player.posRect.x + player.posRect.w/2)
-								{
-									player.flip = false;
-								}else if(cursor.mouseX < player.posRect.x + player.posRect.w/2)
-								{
-									player.flip = true;
-								}
 							}
 
 						}// POLL EVENT
 
 						//UPDATE SECTION
-						//update player 1 tank
+						//update player 1
+						player.posRect.x += pVelX / 20;
+
+						player.posRect.y += pVelY / 20;
 						player.Update(deltaTime, cursor.cursorRect);
 
 						cursor.Update(deltaTime);
 
+						if(cursor.oldMouseX > player.posRect.x + player.posRect.w/2)
+						{
+							player.flip = false;
+						}else if(cursor.oldMouseX < player.posRect.x + player.posRect.w/2)
+						{
+							player.flip = true;
+						}
+
 
 						//move background
-						if ((player.posRect.x >= 1024 - player.posRect.w))
+						if ((player.posRect.x >= 1024 - player.posRect.w) && keyright == true)
 						{
 							//Adjust position floats based on speed, direction and deltaTime
 							X_pos -= (player.speed) * deltaTime;
@@ -634,42 +713,42 @@ int main(int argc, char* argv[]) {
 								bkgdRect.x = (int)(X_pos + 0.5f);
 
 								//move enemy
-								//chase1.ChaseMoveX(-player.speed, deltaTime);
-//											chase2.ChaseMoveX(-player.speed, deltaTime);
-//											chase3.ChaseMoveX(-player.speed, deltaTime);
-//											chase4.ChaseMoveX(-player.speed, deltaTime);
-//											chase5.ChaseMoveX(-player.speed, deltaTime);
-//											chase6.ChaseMoveX(-player.speed, deltaTime);
-//											chase7.ChaseMoveX(-player.speed, deltaTime);
-//											chase8.ChaseMoveX(-player.speed, deltaTime);
-//											chase9.ChaseMoveX(-player.speed, deltaTime);
-//											chase10.ChaseMoveX(-player.speed, deltaTime);
+								chase1.ChaseMoveX(-player.speed, deltaTime);
+//								chase2.ChaseMoveX(-player.speed, deltaTime);
+//								chase3.ChaseMoveX(-player.speed, deltaTime);
+//								chase4.ChaseMoveX(-player.speed, deltaTime);
+//								chase5.ChaseMoveX(-player.speed, deltaTime);
+//								chase6.ChaseMoveX(-player.speed, deltaTime);
+//								chase7.ChaseMoveX(-player.speed, deltaTime);
+//								chase8.ChaseMoveX(-player.speed, deltaTime);
+//								chase9.ChaseMoveX(-player.speed, deltaTime);
+//								chase10.ChaseMoveX(-player.speed, deltaTime);
 
 								turret1.MoveX(-player.speed, deltaTime);
-//											turret2.MoveX(-player.speed, deltaTime);
-//											turret3.MoveX(-player.speed, deltaTime);
-//											turret4.MoveX(-player.speed, deltaTime);
-//											turret5.MoveX(-player.speed, deltaTime);
-//											turret6.MoveX(-player.speed, deltaTime);
-//											turret7.MoveX(-player.speed, deltaTime);
-//											turret8.MoveX(-player.speed, deltaTime);
-//											turret9.MoveX(-player.speed, deltaTime);
-//											turret10.MoveX(-player.speed, deltaTime);
+//								turret2.MoveX(-player.speed, deltaTime);
+//								turret3.MoveX(-player.speed, deltaTime);
+//								turret4.MoveX(-player.speed, deltaTime);
+//								turret5.MoveX(-player.speed, deltaTime);
+//								turret6.MoveX(-player.speed, deltaTime);
+//								turret7.MoveX(-player.speed, deltaTime);
+//								turret8.MoveX(-player.speed, deltaTime);
+//								turret9.MoveX(-player.speed, deltaTime);
+//								turret10.MoveX(-player.speed, deltaTime);
 
 
 								//key.MoveX(-player.speed, deltaTime);
 								//health.MoveX(-player.speed, deltaTime);
 								//magic.MoveX(-player.speed, deltaTime);
 
-								//spirits.MoveX(-player.speed, deltaTime);
-								//lights.MoveX(-player.speed, deltaTime);
+								spirits.MoveX(-player.speed, deltaTime);
+								lights.MoveX(-player.speed, deltaTime);
 							}
 							else
 							{
 								X_pos = bkgdRect.x;
 							}
 						}
-						if ((player.posRect.x <= 0))
+						if ((player.posRect.x <= 0) && keyleft == true)
 						{
 							X_pos += (player.speed) * deltaTime;
 
@@ -678,7 +757,7 @@ int main(int argc, char* argv[]) {
 								bkgdRect.x = (int)(X_pos + 0.5f);
 
 								//move enemy tank
-								//chase1.ChaseMoveX(player.speed, deltaTime);
+								chase1.ChaseMoveX(player.speed, deltaTime);
 //											chase2.ChaseMoveX(player.speed, deltaTime);
 //											chase3.ChaseMoveX(player.speed, deltaTime);
 //											chase4.ChaseMoveX(player.speed, deltaTime);
@@ -704,8 +783,8 @@ int main(int argc, char* argv[]) {
 								//health.MoveX(player.speed, deltaTime);
 								//magic.MoveX(player.speed, deltaTime);
 
-								//spirits.MoveX(player.speed, deltaTime);
-								//lights.MoveX(player.speed, deltaTime);
+								spirits.MoveX(player.speed, deltaTime);
+								lights.MoveX(player.speed, deltaTime);
 
 							}
 							else
@@ -714,7 +793,7 @@ int main(int argc, char* argv[]) {
 							}
 						}
 
-						if ((player.posRect.y >= 768 - player.posRect.h))
+						if ((player.posRect.y >= 768 - player.posRect.h) && keydown == true)
 						{
 							//Adjust position floats based on speed, direction and deltaTime
 							Y_pos -= (player.speed) * deltaTime;
@@ -724,7 +803,7 @@ int main(int argc, char* argv[]) {
 								bkgdRect.y = (int)(Y_pos + 0.5f);
 
 								//move enemy tank
-								//chase1.ChaseMoveY(-player.speed, deltaTime);
+								chase1.ChaseMoveY(-player.speed, deltaTime);
 //											chase2.ChaseMoveY(-player.speed, deltaTime);
 //											chase3.ChaseMoveY(-player.speed, deltaTime);
 //											chase4.ChaseMoveY(-player.speed, deltaTime);
@@ -750,15 +829,15 @@ int main(int argc, char* argv[]) {
 								//health.MoveY(-player.speed, deltaTime);
 								//magic.MoveY(-player.speed, deltaTime);
 
-								//spirits.MoveY(-player.speed, deltaTime);
-								//lights.MoveY(-player.speed, deltaTime);
+								spirits.MoveY(-player.speed, deltaTime);
+								lights.MoveY(-player.speed, deltaTime);
 					}
 							else
 							{
 								Y_pos = bkgdRect.y;
 							}
 						}
-						if ((player.posRect.y <= 0))
+						if ((player.posRect.y <= 0) && keyup == true)
 						{
 							Y_pos += (player.speed) * deltaTime;
 
@@ -767,7 +846,7 @@ int main(int argc, char* argv[]) {
 								bkgdRect.y = (int)(Y_pos + 0.5f);
 
 								//move enemy chase
-								//chase1.ChaseMoveY(player.speed, deltaTime);
+								chase1.ChaseMoveY(player.speed, deltaTime);
 //											chase2.ChaseMoveY(player.speed, deltaTime);
 //											chase3.ChaseMoveY(player.speed, deltaTime);
 //											chase4.ChaseMoveY(player.speed, deltaTime);
@@ -793,8 +872,8 @@ int main(int argc, char* argv[]) {
 								//health.MoveY(player.speed, deltaTime);
 								//magic.MoveY(player.speed, deltaTime);
 
-								//spirits.MoveY(player.speed, deltaTime);
-								//lights.MoveY(player.speed, deltaTime);
+								spirits.MoveY(player.speed, deltaTime);
+								lights.MoveY(player.speed, deltaTime);
 							}
 							else
 							{
@@ -803,21 +882,21 @@ int main(int argc, char* argv[]) {
 						}
 
 						//UDPATE ENEMIES*************
-						//chase1.Update(deltaTime, player.posRect);
+						chase1.Update(deltaTime, player.posRect);
 
 						turret1.Update(deltaTime, player.posRect);
 
 						//check for hit from tanks
 						//1
-						/*if (SDL_HasIntersection(&player.posRect, &chase1.chaseRect))
+						if (SDL_HasIntersection(&player.posRect, &chase1.chaseRect))
 						{
 							player.chaseHit();
-							//if (player.playerHealth <= 0)
-							//{
-							//	level = false;
-							//	gameState = LOSE;
-							//}
-							//break;
+							if (player.playerHealth <= 0)
+							{
+								level = false;
+								player.Reset();
+								gameState = LOSE;
+							}
 						}
 
 						//check if player hit guards
@@ -834,7 +913,7 @@ int main(int argc, char* argv[]) {
 									chase1.RemoveHealth();
 								}
 							}
-						}		*/
+						}
 
 						//check for hit from turret
 										//1
@@ -844,11 +923,12 @@ int main(int argc, char* argv[]) {
 											{
 												turret1.bulletList[i].Reset();
 												player.turretHit();
-												//if(player.playerHealth <= 0)
-												//{
-												//	level = false;
-												//	gameState = LOSE;
-												//}
+												if(player.playerHealth <= 0)
+												{
+													player.Reset();
+													level = false;
+													gameState = LOSE;
+												}
 											}
 										}
 
@@ -913,9 +993,9 @@ int main(int argc, char* argv[]) {
 
 						SDL_RenderCopy(renderer, Level, NULL, &bkgdRect);
 
-						//spirits.Draw(renderer);
+						spirits.Draw(renderer);
 
-						//lights.Draw(renderer);
+						lights.Draw(renderer);
 
 						//draw pickupsbkgd
 						SDL_RenderCopy(renderer, InvBkgd, NULL, &PickupsbkgdRect);
@@ -944,7 +1024,7 @@ int main(int argc, char* argv[]) {
 
 						turret1.Draw(renderer);
 
-						//chase1.Draw(renderer);
+						chase1.Draw(renderer);
 
 						cursor.Draw(renderer);
 
@@ -959,14 +1039,268 @@ int main(int argc, char* argv[]) {
 									break;
 					case WIN:
 					{
+						alreadyOver = false;
+						win = true;
+						SDL_ShowCursor(0);
 
-					}break;
-					case LOSE:
+						//start loop
+						while(win)
+						{
+						//Create deltaTime - for frame rate independence
+						thisTime = SDL_GetTicks();
+						deltaTime = (float)(thisTime - lastTime) / 1000;
+						lastTime = thisTime;
+
+						//Handle Events on Queue - Keypresses and such START*************
+						while (SDL_PollEvent(&e) != 0)
+						{
+							//User requests quit
+							if (e.type == SDL_QUIT)
+							{
+								quit = true;
+								win = false;
+								break;
+							}
+							else if(e.type == SDL_KEYDOWN)
+							{
+
+							switch (e.key.keysym.sym)
+							{
+							case SDLK_q:
+								quit = true;
+								win = false;
+								break;
+							case SDLK_ESCAPE:
+								quit = true;
+								win = false;
+								break;
+							}//END SWITCH KEYDOWN
+								break;
+							}else if(e.type == SDL_MOUSEBUTTONDOWN)
+							{
+								switch(e.button.button)
+										{
+										case SDL_BUTTON_LEFT:
+											if (players1Over)
+											{
+												players1Pressed = true;
+												players1Over = false;
+
+											}
+										break;
+										}
+							}else if(e.type == SDL_MOUSEBUTTONUP)
+							{
+								switch(e.button.button)
+										{
+										case SDL_BUTTON_LEFT:
+											if (players1Over)
+											{
+												//Play the Over sound - plays fine through levels, must pause/delay for QUIT
+												//Mix_PlayChannel(-1, pressedSound, 0);
+												win = false;
+												gameState = LEVEL;
+
+											}
+										break;
+										}
+							}else if(e.type == SDL_MOUSEMOTION)
+							{
+								cursor.MouseMotion(e);
+							}
+
+						}// POLL EVENT
+
+						//Update
+						//Update Cursor
+						cursor.Update(deltaTime);
+
+
+						//check for collision between cursor active state and buttons
+						players1Over = SDL_HasIntersection(&cursor.cursorRect, &Players1ANPos);
+
+						//If the cursor is over a button, play the over sound
+						if (players1Over)
+						{
+							if (alreadyOver == false)
+							{
+								//Mix_PlayChannel(-1, overSound, 0);
+								alreadyOver = true;
+							}
+						}
+
+						//if the cursor is not over ANY button, reset the already Over var
+						if (!players1Over)
+						{
+							alreadyOver = false;
+							players1Pressed = false;
+						}
+
+
+
+						// Start Drawing
+						//Clear SDL renderer
+						SDL_RenderClear(renderer);
+
+						//Draw the menu image
+						SDL_RenderCopy(renderer, winLevel, NULL, &winPos);
+						SDL_RenderCopy(renderer, winText, NULL, &winTextPos);
+
+						//Draw One Player image
+						if(players1Pressed)
+						{
+							SDL_RenderCopy(renderer, playAP, NULL, &Players1ANPos);
+						}
+						else if (players1Over)
+						{
+							SDL_RenderCopy(renderer, playAO, NULL, &Players1AOPos);
+						}
+						else
+						{
+							SDL_RenderCopy(renderer, playAN, NULL, &Players1ANPos);
+						}
+
+						//Draw the cursor image
+						cursor.Draw(renderer);
+
+
+						// SDL Render present
+						SDL_RenderPresent(renderer);
+					}
+				}break;
+				case LOSE:
+				{
+					alreadyOver = false;
+					lose = true;
+					SDL_ShowCursor(0);
+
+					//start loop
+					while(lose)
 					{
+					//Create deltaTime - for frame rate independence
+					thisTime = SDL_GetTicks();
+					deltaTime = (float)(thisTime - lastTime) / 1000;
+					lastTime = thisTime;
 
-					}break;
+					//Handle Events on Queue - Keypresses and such START*************
+					while (SDL_PollEvent(&e) != 0)
+					{
+						//User requests quit
+						if (e.type == SDL_QUIT)
+						{
+							quit = true;
+							lose = false;
+							break;
+						}
+						else if(e.type == SDL_KEYDOWN)
+						{
+
+						switch (e.key.keysym.sym)
+						{
+						case SDLK_q:
+							quit = true;
+							lose = false;
+							break;
+						case SDLK_ESCAPE:
+							quit = true;
+							lose = false;
+							break;
+						}//END SWITCH KEYDOWN
+							break;
+						}else if(e.type == SDL_MOUSEBUTTONDOWN)
+						{
+							switch(e.button.button)
+									{
+									case SDL_BUTTON_LEFT:
+										if (players1Over)
+										{
+											players1Pressed = true;
+											players1Over = false;
+
+										}
+									break;
+									}
+						}else if(e.type == SDL_MOUSEBUTTONUP)
+						{
+							switch(e.button.button)
+									{
+									case SDL_BUTTON_LEFT:
+										if (players1Over)
+										{
+											//Play the Over sound - plays fine through levels, must pause/delay for QUIT
+											//Mix_PlayChannel(-1, pressedSound, 0);
+											lose = false;
+											gameState = LEVEL;
+
+										}
+									break;
+									}
+						}else if(e.type == SDL_MOUSEMOTION)
+						{
+							cursor.MouseMotion(e);
+						}
+
+					}// POLL EVENT
+
+					//Update
+					//Update Cursor
+					cursor.Update(deltaTime);
+
+
+					//check for collision between cursor active state and buttons
+					players1Over = SDL_HasIntersection(&cursor.cursorRect, &Players1ANPos);
+
+					//If the cursor is over a button, play the over sound
+					if (players1Over)
+					{
+						if (alreadyOver == false)
+						{
+							//Mix_PlayChannel(-1, overSound, 0);
+							alreadyOver = true;
+						}
+					}
+
+					//if the cursor is not over ANY button, reset the already Over var
+					if (!players1Over)
+					{
+						alreadyOver = false;
+						players1Pressed = false;
+					}
+
+
+
+					// Start Drawing
+					//Clear SDL renderer
+					SDL_RenderClear(renderer);
+
+					//Draw the menu image
+					SDL_RenderCopy(renderer, loseLevel, NULL, &winPos);
+					SDL_RenderCopy(renderer, loseText, NULL, &loseTextPos);
+
+					//Draw One Player image
+					if(players1Pressed)
+					{
+						SDL_RenderCopy(renderer, playAP, NULL, &Players1ANPos);
+					}
+					else if (players1Over)
+					{
+						SDL_RenderCopy(renderer, playAO, NULL, &Players1AOPos);
+					}
+					else
+					{
+						SDL_RenderCopy(renderer, playAN, NULL, &Players1ANPos);
+					}
+
+					//Draw the cursor image
+					cursor.Draw(renderer);
+
+
+					// SDL Render present
+					SDL_RenderPresent(renderer);
 				}
+			}break;
 			}
+		}
 
     // Close and destroy the window
     SDL_DestroyWindow(window);

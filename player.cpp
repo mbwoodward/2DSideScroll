@@ -144,9 +144,15 @@ void Player::Update(float deltaTime, SDL_Rect target)
 
 }
 
+void Player::Reset()
+{
+	playerHealth = 100;
+	playerMagic = 100;
+}
+
 void Player::chaseHit()
 {
-	playerHealth -= .01f;
+	playerHealth -= .1f;
 
 	healthR.w = playerHealth/maxHealth * 147;
 }

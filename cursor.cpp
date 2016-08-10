@@ -40,6 +40,9 @@ void Cursor::Update(float deltaTime)
 	pos_X = mouseX;
 	pos_Y = mouseY;
 
+	oldMouseX = mouseX;
+	oldMouseY = mouseY;
+
 	//assign to SDL_Rect ints X and Y
 	cursorRect.x = (int) (pos_X + 0.5f);
 	cursorRect.y = (int) (pos_Y + 0.5f);
