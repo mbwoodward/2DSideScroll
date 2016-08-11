@@ -28,13 +28,13 @@ Turret::Turret(SDL_Renderer *renderer, string filePath, string audioPath, int tu
 	else if(turretNum == 1)
 	{
 	//Create the turret base file path
-	string basePath = filePath + "turretbase.png";
+	string basePath = filePath + "wardenbase.png";
 
 	//load image into texture
 	tBase = IMG_LoadTexture(renderer, basePath.c_str());
 
 	//Create turret barrel file path
-	string barrelPath = filePath + "turret.png";
+	string barrelPath = filePath + "warden.png";
 
 	//load image into texture
 	tBarrel = IMG_LoadTexture(renderer, barrelPath.c_str());
@@ -65,8 +65,17 @@ Turret::Turret(SDL_Renderer *renderer, string filePath, string audioPath, int tu
 	center.y = barrelRect.h/2;
 
 	//string to create bullet path
+	string bulletPath;
 
-	string bulletPath = filePath + "fire.png";
+	if(turretNum == 1)
+	{
+	bulletPath = filePath + "soulcatch.png";
+	}
+	else if(turretNum == 0)
+	{
+	bulletPath = filePath + "fire.png";
+	}
+
 
 	//Create the turret's bullet pool
 	for(int i = 0; i < 10; i++)
