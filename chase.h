@@ -24,6 +24,7 @@ class Chase{
 public:
 	//is the enemy active - still alive?
 	bool active;
+	bool alive;
 
 	//string to hold the path the enemy's texture
 	string chasePath;
@@ -35,7 +36,7 @@ public:
 	SDL_Rect chaseRect;
 
 	//vars used to get the angle between the enemy's position and the player's position
-	float x, y, angle;
+	float x, y, angle, oldX, oldY;
 
 	//audio
 	Mix_Chunk *explode;

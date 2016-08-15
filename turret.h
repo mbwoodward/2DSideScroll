@@ -39,6 +39,7 @@ public:
 	int bulletType;
 
 	int health;
+	int startHealth;
 
 	//variable to hold the list of bullets
 	vector<TurretBullet> bulletList;

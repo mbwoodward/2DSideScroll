@@ -23,24 +23,8 @@ Turret::Turret(SDL_Renderer *renderer, string filePath, string audioPath, int tu
 	//load image into texture
 	tBarrel = IMG_LoadTexture(renderer, barrelPath.c_str());
 
-	health = 10;
-	}
-	else if(turretNum == 1)
-	{
-	//Create the turret base file path
-	string basePath = filePath + "wardenbase.png";
-
-	//load image into texture
-	tBase = IMG_LoadTexture(renderer, basePath.c_str());
-
-	//Create turret barrel file path
-	string barrelPath = filePath + "warden.png";
-
-	//load image into texture
-	tBarrel = IMG_LoadTexture(renderer, barrelPath.c_str());
-
-	health = 20;
-	}
+	startHealth = 10;
+	health = startHealth;
 
 	//set the SDL_Rect X and Y for base
 	baseRect.x = x;
@@ -67,15 +51,7 @@ Turret::Turret(SDL_Renderer *renderer, string filePath, string audioPath, int tu
 	//string to create bullet path
 	string bulletPath;
 
-	if(turretNum == 1)
-	{
-	bulletPath = filePath + "soulcatch.png";
-	}
-	else if(turretNum == 0)
-	{
 	bulletPath = filePath + "fire.png";
-	}
-
 
 	//Create the turret's bullet pool
 	for(int i = 0; i < 10; i++)
@@ -97,6 +73,74 @@ Turret::Turret(SDL_Renderer *renderer, string filePath, string audioPath, int tu
 
 	posT_X = barrelRect.x;
 	posT_Y = barrelRect.y;
+	}
+	else if(turretNum == 1)
+	{
+	//Create the turret base file path
+	string basePath = filePath + "wardenbase.png";
+
+	//load image into texture
+	tBase = IMG_LoadTexture(renderer, basePath.c_str());
+
+	//Create turret barrel file path
+	string barrelPath = filePath + "warden.png";
+
+	//load image into texture
+	tBarrel = IMG_LoadTexture(renderer, barrelPath.c_str());
+
+	startHealth = 20;
+	health = startHealth;
+
+	//set the SDL_Rect X and Y for base
+	baseRect.x = x;
+	baseRect.y = y;
+
+	//get width and height
+	int w, h;
+	SDL_QueryTexture(tBase, NULL, NULL, &w, &h);
+	baseRect.w = w;
+	baseRect.h = h;
+
+	//get width and height
+	SDL_QueryTexture(tBarrel, NULL, NULL, &w, &h);
+	barrelRect.w = w;
+	barrelRect.h = h;
+
+	//set SDL_Rect X and Y for barrel
+	barrelRect.x = x + baseRect.w/2 - barrelRect.w/2;
+	barrelRect.y = y + baseRect.h/2 - barrelRect.h/2;
+
+
+
+	center.x = barrelRect.w/2;
+	center.y = barrelRect.h/2;
+
+	//string to create bullet path
+	string bulletPath;
+
+	bulletPath = filePath + "soulcatch.png";
+
+	//Create the turret's bullet pool
+	for(int i = 0; i < 10; i++)
+	{
+		//create the bullet and stuff
+		TurretBullet tmpBullet(renderer, bulletPath, 2000, 2000);
+
+
+		//add to bulletList
+		bulletList.push_back(tmpBullet);
+	}
+
+	//random null init
+	srand(time(NULL));
+
+	//update float values for movement
+	posB_X = baseRect.x;
+	posB_Y = baseRect.y;
+
+	posT_X = barrelRect.x;
+	posT_Y = barrelRect.y;
+	}
 }
 
 void Turret::MoveX(float tankSpeed, float deltaTime)
@@ -123,6 +167,8 @@ void Turret::MoveY(float tankSpeed, float deltaTime)
 void Turret::Draw(SDL_Renderer *renderer)
 {
 
+	if(active == true)
+	{
 
 	//Draw base
 	SDL_RenderCopy(renderer, tBase, NULL, &baseRect);
@@ -140,6 +186,7 @@ void Turret::Draw(SDL_Renderer *renderer)
 				bulletList[i].Draw(renderer);
 			}
 		}
+	}
 
 }
 
@@ -156,14 +203,8 @@ void Turret::RemoveHealth()
 
 void Turret::Reset()
 {
-	//reset the x pos
-	baseRect.x = -1000;
-	barrelRect.x = -1000;
-	//update pos_X
-	posT_X = baseRect.x;
-	posB_X = barrelRect.x;
 
-	health = 1200;
+	health = startHealth;
 
 	//deactivate
 	active = false;
@@ -172,6 +213,8 @@ void Turret::Reset()
 //Turret Update
 void Turret::Update(float deltaTime, SDL_Rect tankRect)
 {
+	if(active == true)
+	{
 	//get angle between the tank and turret
 	x = (tankRect.x + (tankRect.w/2)) - (baseRect.x + (baseRect.w/2));
 	y = (tankRect.y + (tankRect.h/2)) - (baseRect.y + (baseRect.h/2));
@@ -197,7 +240,7 @@ void Turret::Update(float deltaTime, SDL_Rect tankRect)
 				bulletList[i].Update(deltaTime);
 			}
 		}
-
+	}
 }
 
 void Turret::CreateBullet(SDL_Rect target)

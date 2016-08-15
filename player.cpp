@@ -34,7 +34,7 @@ Player::Player(SDL_Renderer *renderer, int pNum, string filePath, string audioPa
 	playerNum = pNum;
 
 	//set float for player speed
-	speed = 100.0f;
+	speed = 200.0f;
 	pVelX = 0;
 	pVelY = 0;
 
@@ -55,6 +55,9 @@ Player::Player(SDL_Renderer *renderer, int pNum, string filePath, string audioPa
 	//set the SDL_Rect X and Y for the player
 	posRect.x = x;
 	posRect.y = y;
+
+	oldX = x;
+	oldY = y;
 
 	//Use SDL_QueryTexture to get the W and H of the player's texture
 	int w, h;
@@ -148,6 +151,12 @@ void Player::Reset()
 {
 	playerHealth = 100;
 	playerMagic = 100;
+
+	healthR.w = playerHealth/maxHealth * 147;
+	magicR.w = playerMagic/maxMagic * 147;
+
+	posRect.x = oldX;
+	posRect.y = oldY;
 }
 
 void Player::chaseHit()

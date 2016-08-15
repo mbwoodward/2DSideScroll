@@ -45,6 +45,8 @@ public:
 	int pVelX;
 	int pVelY;
 
+	float oldX, oldY;
+
 	SDL_Rect targetPos;
 
 	//tank hit by eTank

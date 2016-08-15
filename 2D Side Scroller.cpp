@@ -283,11 +283,21 @@ int main(int argc, char* argv[]) {
 			bool hasCerberus = false;
 			bool capture = false;
 			bool escape = false;
+			bool needHealth = false, needMagic = false;
+			bool wardenDead = false;
 
 			//Create pickups**
-			Pickup key = Pickup(renderer, images_dir.c_str(), 0, 1900.0f, 575.0f);
-			Pickup health = Pickup(renderer, images_dir.c_str(), 1, 200.0f, 500.0f);
-			Pickup magic = Pickup(renderer, images_dir.c_str(), 2, 600.0f, 500.0f);
+			Pickup key = Pickup(renderer, images_dir.c_str(), 0, 1950.0f, 615.0f);
+			Pickup health1 = Pickup(renderer, images_dir.c_str(), 1, 200.0f, 500.0f);
+			Pickup magic1 = Pickup(renderer, images_dir.c_str(), 2, 600.0f, 500.0f);
+			Pickup health2 = Pickup(renderer, images_dir.c_str(), 1, 1300.0f, 450.0f);
+			Pickup magic2 = Pickup(renderer, images_dir.c_str(), 2, 1500.0f, 950.0f);
+			Pickup health3 = Pickup(renderer, images_dir.c_str(), 1, 2250.0f, 500.0f);
+			Pickup magic3 = Pickup(renderer, images_dir.c_str(), 2, 2500.0f, 600.0f);
+			Pickup health4 = Pickup(renderer, images_dir.c_str(), 1, 2300.0f, 850.0f);
+			Pickup magic4 = Pickup(renderer, images_dir.c_str(), 2, 500.0f, -550.0f);
+			Pickup health5 = Pickup(renderer, images_dir.c_str(), 1, 150.0f, -250.0f);
+			Pickup magic5 = Pickup(renderer, images_dir.c_str(), 2, 350.0f, 1000.0f);
 
 			//*****Secondary-SPIRITS**********
 			Pickup spirits = Pickup(renderer, images_dir.c_str(), 3, 64.0f, 1002.0f);
@@ -295,6 +305,11 @@ int main(int argc, char* argv[]) {
 
 			//cage
 			Pickup cage = Pickup(renderer, images_dir.c_str(), 5, 3003.0f, 92.0f);
+			Pickup exit = Pickup(renderer, images_dir.c_str(), 6, 150.0f, 25.0f);
+
+			Pickup cText = Pickup(renderer, images_dir.c_str(), 7, 512.0f-(409/2), 384.0f-(266/2));
+			Pickup eText = Pickup(renderer, images_dir.c_str(), 8, 512.0f-(304/2), 384.0f-(162/2));
+
 
 
 			//bool value to control the over sound effect and the buttons
@@ -351,29 +366,29 @@ int main(int argc, char* argv[]) {
 
 		//********Create Enemy Turrets START**********
 		//*********Enemy Turrets END***********
-//		Turret turret1 = Turret(renderer, images_dir.c_str(), audio_dir.c_str(), 0, 650.0f, 400.0f);
-//		Turret turret2 = Turret(renderer, images_dir.c_str(), audio_dir.c_str(), 0, 850.0f, -650.0f);
-//		Turret turret3 = Turret(renderer, images_dir.c_str(), audio_dir.c_str(), 0, 800.0f, 875.0f);
-//		Turret turret4 = Turret(renderer, images_dir.c_str(), audio_dir.c_str(), 0, 1950.0f, -660.0f);
-//		Turret turret5 = Turret(renderer, images_dir.c_str(), audio_dir.c_str(), 0, 1200.0f, 1075.0f);
-//		Turret turret6 = Turret(renderer, images_dir.c_str(), audio_dir.c_str(), 0, 2450.0f, -300.0f);
-//		Turret turret7 = Turret(renderer, images_dir.c_str(), audio_dir.c_str(), 0, 2400.0f, 325.0f);
-//		Turret turret8 = Turret(renderer, images_dir.c_str(), audio_dir.c_str(), 0, 2850.0f, 600.0f);
-//		Turret turret9 = Turret(renderer, images_dir.c_str(), audio_dir.c_str(), 0, 2150.0f, 975.0f);
+		Turret turret1 = Turret(renderer, images_dir.c_str(), audio_dir.c_str(), 0, 650.0f, 400.0f);
+		Turret turret2 = Turret(renderer, images_dir.c_str(), audio_dir.c_str(), 0, 850.0f, -650.0f);
+		Turret turret3 = Turret(renderer, images_dir.c_str(), audio_dir.c_str(), 0, 800.0f, 875.0f);
+		Turret turret4 = Turret(renderer, images_dir.c_str(), audio_dir.c_str(), 0, 1950.0f, -660.0f);
+		Turret turret5 = Turret(renderer, images_dir.c_str(), audio_dir.c_str(), 0, 1200.0f, 1075.0f);
+		Turret turret6 = Turret(renderer, images_dir.c_str(), audio_dir.c_str(), 0, 2450.0f, -300.0f);
+		Turret turret7 = Turret(renderer, images_dir.c_str(), audio_dir.c_str(), 0, 2400.0f, 325.0f);
+		Turret turret8 = Turret(renderer, images_dir.c_str(), audio_dir.c_str(), 0, 2850.0f, 600.0f);
+		Turret turret9 = Turret(renderer, images_dir.c_str(), audio_dir.c_str(), 0, 2150.0f, 975.0f);
 
 		Turret SoulWarden = Turret(renderer, images_dir.c_str(), audio_dir.c_str(), 1, 1875.0f, 550.0f);
 
 		//********Create Enemy Chase START****************
 		Chase chase1 = Chase(renderer, images_dir.c_str(), audio_dir.c_str(), 450.0f, -550.0f);
 		Chase chase2 = Chase(renderer, images_dir.c_str(), audio_dir.c_str(), 950.0f, 75.0f);
-		//Chase chase3 = Chase(renderer, images_dir.c_str(), audio_dir.c_str(), 300.0f, 675.0f);
-		//Chase chase4 = Chase(renderer, images_dir.c_str(), audio_dir.c_str(), 400.0f, 1200.0f);
-		//Chase chase5 = Chase(renderer, images_dir.c_str(), audio_dir.c_str(), 1375.0f, -250.0f);
-		//Chase chase6 = Chase(renderer, images_dir.c_str(), audio_dir.c_str(), 1425.0f, 200.0f);
-		//Chase chase7 = Chase(renderer, images_dir.c_str(), audio_dir.c_str(), 1500.0f, 850.0f);
-		//Chase chase8 = Chase(renderer, images_dir.c_str(), audio_dir.c_str(), 2850.0f, -700.0f);
-		//Chase chase9 = Chase(renderer, images_dir.c_str(), audio_dir.c_str(), 2650.0f, 100.0f);
-		//Chase chase10 = Chase(renderer, images_dir.c_str(), audio_dir.c_str(), 400.0f, 1150.0f);
+		Chase chase3 = Chase(renderer, images_dir.c_str(), audio_dir.c_str(), 300.0f, 675.0f);
+		Chase chase4 = Chase(renderer, images_dir.c_str(), audio_dir.c_str(), 400.0f, 1200.0f);
+		Chase chase5 = Chase(renderer, images_dir.c_str(), audio_dir.c_str(), 1375.0f, -250.0f);
+		Chase chase6 = Chase(renderer, images_dir.c_str(), audio_dir.c_str(), 1425.0f, 300.0f);
+		Chase chase7 = Chase(renderer, images_dir.c_str(), audio_dir.c_str(), 1500.0f, 850.0f);
+		Chase chase8 = Chase(renderer, images_dir.c_str(), audio_dir.c_str(), 2850.0f, -700.0f);
+		Chase chase9 = Chase(renderer, images_dir.c_str(), audio_dir.c_str(), 2650.0f, 100.0f);
+		Chase chase10 = Chase(renderer, images_dir.c_str(), audio_dir.c_str(), 2400.0f, 1150.0f);
 		//*********Create Enemy Chase END**************
 
 
@@ -517,6 +532,7 @@ int main(int argc, char* argv[]) {
 					{
 						alreadyOver = false;
 						level = true;
+						key.active = false;
 						SDL_ShowCursor(0);
 
 					/*	if (Mix_PlayingMusic())
@@ -622,6 +638,7 @@ int main(int argc, char* argv[]) {
 								if(capture == true)
 								{
 									cage.active = false;
+									capture = false;
 									hasCerberus = true;
 								}
 								break;
@@ -629,6 +646,33 @@ int main(int argc, char* argv[]) {
 							case SDLK_e:
 								if(escape == true)
 								{
+									hasCerberus = false;
+									hasKey = false;
+									player.Reset();
+									chase1.alive = true;
+									chase2.alive = true;
+									chase3.alive = true;
+									chase4.alive = true;
+									chase5.alive = true;
+									chase6.alive = true;
+									chase7.alive = true;
+									chase8.alive = true;
+									chase9.alive = true;
+									chase10.alive = true;
+									turret1.active = true;
+									turret2.active = true;
+									turret3.active = true;
+									turret4.active = true;
+									turret5.active = true;
+									turret6.active = true;
+									turret7.active = true;
+									turret8.active = true;
+									turret9.active = true;
+									SoulWarden.active = true;
+									cage.active = true;
+									win = true;
+									level = false;
+									gameState = WIN;
 
 								}
 								break;
@@ -696,9 +740,9 @@ int main(int argc, char* argv[]) {
 
 						//UPDATE SECTION
 						//update player 1
-						player.posRect.x += pVelX / 20;
+						player.posRect.x += pVelX / 40;
 
-						player.posRect.y += pVelY / 20;
+						player.posRect.y += pVelY / 40;
 						player.Update(deltaTime, cursor.cursorRect);
 
 						cursor.Update(deltaTime);
@@ -711,6 +755,30 @@ int main(int argc, char* argv[]) {
 							player.flip = true;
 						}
 
+						if(player.playerMagic <= 75)
+						{
+							needMagic = true;
+							magic1.active = true;
+							magic2.active = true;
+							magic3.active = true;
+							magic4.active = true;
+							magic5.active = true;
+						}
+
+						if(player.playerHealth <= 75)
+						{
+							needHealth = true;
+							health1.active = true;
+							health2.active = true;
+							health3.active = true;
+							health4.active = true;
+							health5.active = true;
+						}
+
+						if(wardenDead)
+						{
+							key.active = true;
+						}
 
 						//move background
 						if ((player.posRect.x >= 1024 - player.posRect.w) && keyright == true)
@@ -725,34 +793,43 @@ int main(int argc, char* argv[]) {
 								//move enemy
 								chase1.ChaseMoveX(-player.speed, deltaTime);
 								chase2.ChaseMoveX(-player.speed, deltaTime);
-//								chase3.ChaseMoveX(-player.speed, deltaTime);
-//								chase4.ChaseMoveX(-player.speed, deltaTime);
-//								chase5.ChaseMoveX(-player.speed, deltaTime);
-//								chase6.ChaseMoveX(-player.speed, deltaTime);
-//								chase7.ChaseMoveX(-player.speed, deltaTime);
-//								chase8.ChaseMoveX(-player.speed, deltaTime);
-//								chase9.ChaseMoveX(-player.speed, deltaTime);
-//								chase10.ChaseMoveX(-player.speed, deltaTime);
+								chase3.ChaseMoveX(-player.speed, deltaTime);
+								chase4.ChaseMoveX(-player.speed, deltaTime);
+								chase5.ChaseMoveX(-player.speed, deltaTime);
+								chase6.ChaseMoveX(-player.speed, deltaTime);
+								chase7.ChaseMoveX(-player.speed, deltaTime);
+								chase8.ChaseMoveX(-player.speed, deltaTime);
+								chase9.ChaseMoveX(-player.speed, deltaTime);
+								chase10.ChaseMoveX(-player.speed, deltaTime);
 
-//								turret1.MoveX(-player.speed, deltaTime);
-//								turret2.MoveX(-player.speed, deltaTime);
-//								turret3.MoveX(-player.speed, deltaTime);
-//								turret4.MoveX(-player.speed, deltaTime);
-//								turret5.MoveX(-player.speed, deltaTime);
-//								turret6.MoveX(-player.speed, deltaTime);
-//								turret7.MoveX(-player.speed, deltaTime);
-//								turret8.MoveX(-player.speed, deltaTime);
-//								turret9.MoveX(-player.speed, deltaTime);
-//								SoulWarden.MoveX(-player.speed, deltaTime);
+								turret1.MoveX(-player.speed, deltaTime);
+								turret2.MoveX(-player.speed, deltaTime);
+								turret3.MoveX(-player.speed, deltaTime);
+								turret4.MoveX(-player.speed, deltaTime);
+								turret5.MoveX(-player.speed, deltaTime);
+								turret6.MoveX(-player.speed, deltaTime);
+								turret7.MoveX(-player.speed, deltaTime);
+								turret8.MoveX(-player.speed, deltaTime);
+								turret9.MoveX(-player.speed, deltaTime);
+								SoulWarden.MoveX(-player.speed, deltaTime);
 
 
-//								key.MoveX(-player.speed, deltaTime);
-//								health.MoveX(-player.speed, deltaTime);
-//								magic.MoveX(-player.speed, deltaTime);
+								key.MoveX(-player.speed, deltaTime);
+								health1.MoveX(-player.speed, deltaTime);
+								magic1.MoveX(-player.speed, deltaTime);
+								health2.MoveX(-player.speed, deltaTime);
+								magic2.MoveX(-player.speed, deltaTime);
+								health3.MoveX(-player.speed, deltaTime);
+								magic3.MoveX(-player.speed, deltaTime);
+								health4.MoveX(-player.speed, deltaTime);
+								magic4.MoveX(-player.speed, deltaTime);
+								health5.MoveX(-player.speed, deltaTime);
+								magic5.MoveX(-player.speed, deltaTime);
 
 								spirits.MoveX(-player.speed, deltaTime);
 								lights.MoveX(-player.speed, deltaTime);
 								cage.MoveX(-player.speed, deltaTime);
+								exit.MoveX(-player.speed, deltaTime);
 							}
 							else
 							{
@@ -770,33 +847,42 @@ int main(int argc, char* argv[]) {
 								//move enemy tank
 								chase1.ChaseMoveX(player.speed, deltaTime);
 								chase2.ChaseMoveX(player.speed, deltaTime);
-//								chase3.ChaseMoveX(player.speed, deltaTime);
-//								chase4.ChaseMoveX(player.speed, deltaTime);
-//								chase5.ChaseMoveX(player.speed, deltaTime);
-//								chase6.ChaseMoveX(player.speed, deltaTime);
-//								chase7.ChaseMoveX(player.speed, deltaTime);
-//								chase8.ChaseMoveX(player.speed, deltaTime);
-//								chase9.ChaseMoveX(player.speed, deltaTime);
-//								chase10.ChaseMoveX(player.speed, deltaTime);
+								chase3.ChaseMoveX(player.speed, deltaTime);
+								chase4.ChaseMoveX(player.speed, deltaTime);
+								chase5.ChaseMoveX(player.speed, deltaTime);
+								chase6.ChaseMoveX(player.speed, deltaTime);
+								chase7.ChaseMoveX(player.speed, deltaTime);
+								chase8.ChaseMoveX(player.speed, deltaTime);
+								chase9.ChaseMoveX(player.speed, deltaTime);
+								chase10.ChaseMoveX(player.speed, deltaTime);
 
-//								turret1.MoveX(player.speed, deltaTime);
-//								turret2.MoveX(player.speed, deltaTime);
-//								turret3.MoveX(player.speed, deltaTime);
-//								turret4.MoveX(player.speed, deltaTime);
-//								turret5.MoveX(player.speed, deltaTime);
-//								turret6.MoveX(player.speed, deltaTime);
-//								turret7.MoveX(player.speed, deltaTime);
-//								turret8.MoveX(player.speed, deltaTime);
-//								turret9.MoveX(player.speed, deltaTime);
-//								SoulWarden.MoveX(player.speed, deltaTime);
+								turret1.MoveX(player.speed, deltaTime);
+								turret2.MoveX(player.speed, deltaTime);
+								turret3.MoveX(player.speed, deltaTime);
+								turret4.MoveX(player.speed, deltaTime);
+								turret5.MoveX(player.speed, deltaTime);
+								turret6.MoveX(player.speed, deltaTime);
+								turret7.MoveX(player.speed, deltaTime);
+								turret8.MoveX(player.speed, deltaTime);
+								turret9.MoveX(player.speed, deltaTime);
+								SoulWarden.MoveX(player.speed, deltaTime);
 
-//								key.MoveX(player.speed, deltaTime);
-//								health.MoveX(player.speed, deltaTime);
-//								magic.MoveX(player.speed, deltaTime);
+								key.MoveX(player.speed, deltaTime);
+								health1.MoveX(player.speed, deltaTime);
+								magic1.MoveX(player.speed, deltaTime);
+								health2.MoveX(player.speed, deltaTime);
+								magic2.MoveX(player.speed, deltaTime);
+								health3.MoveX(player.speed, deltaTime);
+								magic3.MoveX(player.speed, deltaTime);
+								health4.MoveX(player.speed, deltaTime);
+								magic4.MoveX(player.speed, deltaTime);
+								health5.MoveX(player.speed, deltaTime);
+								magic5.MoveX(player.speed, deltaTime);
 
 								spirits.MoveX(player.speed, deltaTime);
 								lights.MoveX(player.speed, deltaTime);
 								cage.MoveX(player.speed, deltaTime);
+								exit.MoveX(player.speed, deltaTime);
 
 							}
 							else
@@ -816,34 +902,43 @@ int main(int argc, char* argv[]) {
 
 								//move enemy tank
 								chase1.ChaseMoveY(-player.speed, deltaTime);
-//								chase2.ChaseMoveY(-player.speed, deltaTime);
-//								chase3.ChaseMoveY(-player.speed, deltaTime);
-//								chase4.ChaseMoveY(-player.speed, deltaTime);
-//								chase5.ChaseMoveY(-player.speed, deltaTime);
-//								chase6.ChaseMoveY(-player.speed, deltaTime);
-//								chase7.ChaseMoveY(-player.speed, deltaTime);
-//								chase8.ChaseMoveY(-player.speed, deltaTime);
-//								chase9.ChaseMoveY(-player.speed, deltaTime);
-//								chase10.ChaseMoveY(-player.speed, deltaTime);
+								chase2.ChaseMoveY(-player.speed, deltaTime);
+								chase3.ChaseMoveY(-player.speed, deltaTime);
+								chase4.ChaseMoveY(-player.speed, deltaTime);
+								chase5.ChaseMoveY(-player.speed, deltaTime);
+								chase6.ChaseMoveY(-player.speed, deltaTime);
+								chase7.ChaseMoveY(-player.speed, deltaTime);
+								chase8.ChaseMoveY(-player.speed, deltaTime);
+								chase9.ChaseMoveY(-player.speed, deltaTime);
+								chase10.ChaseMoveY(-player.speed, deltaTime);
 
-//								turret1.MoveY(-player.speed, deltaTime);
-//								turret2.MoveY(-player.speed, deltaTime);
-//								turret3.MoveY(-player.speed, deltaTime);
-//								turret4.MoveY(-player.speed, deltaTime);
-//								turret5.MoveY(-player.speed, deltaTime);
-//								turret6.MoveY(-player.speed, deltaTime);
-//								turret7.MoveY(-player.speed, deltaTime);
-//								turret8.MoveY(-player.speed, deltaTime);
-//								turret9.MoveY(-player.speed, deltaTime);
-//								SoulWarden.MoveY(-player.speed, deltaTime);
+								turret1.MoveY(-player.speed, deltaTime);
+								turret2.MoveY(-player.speed, deltaTime);
+								turret3.MoveY(-player.speed, deltaTime);
+								turret4.MoveY(-player.speed, deltaTime);
+								turret5.MoveY(-player.speed, deltaTime);
+								turret6.MoveY(-player.speed, deltaTime);
+								turret7.MoveY(-player.speed, deltaTime);
+								turret8.MoveY(-player.speed, deltaTime);
+								turret9.MoveY(-player.speed, deltaTime);
+								SoulWarden.MoveY(-player.speed, deltaTime);
 
-//								key.MoveY(-player.speed, deltaTime);
-//								health.MoveY(-player.speed, deltaTime);
-//								magic.MoveY(-player.speed, deltaTime);
+								key.MoveY(-player.speed, deltaTime);
+								health1.MoveY(-player.speed, deltaTime);
+								magic1.MoveY(-player.speed, deltaTime);
+								health2.MoveY(-player.speed, deltaTime);
+								magic2.MoveY(-player.speed, deltaTime);
+								health3.MoveY(-player.speed, deltaTime);
+								magic3.MoveY(-player.speed, deltaTime);
+								health4.MoveY(-player.speed, deltaTime);
+								magic4.MoveY(-player.speed, deltaTime);
+								health5.MoveY(-player.speed, deltaTime);
+								magic5.MoveY(-player.speed, deltaTime);
 
 								spirits.MoveY(-player.speed, deltaTime);
 								lights.MoveY(-player.speed, deltaTime);
 								cage.MoveY(-player.speed, deltaTime);
+								exit.MoveY(-player.speed, deltaTime);
 					}
 							else
 							{
@@ -860,34 +955,43 @@ int main(int argc, char* argv[]) {
 
 								//move enemy chase
 								chase1.ChaseMoveY(player.speed, deltaTime);
-//								chase2.ChaseMoveY(player.speed, deltaTime);
-//								chase3.ChaseMoveY(player.speed, deltaTime);
-//								chase4.ChaseMoveY(player.speed, deltaTime);
-//								chase5.ChaseMoveY(player.speed, deltaTime);
-//								chase6.ChaseMoveY(player.speed, deltaTime);
-//								chase7.ChaseMoveY(player.speed, deltaTime);
-//								chase8.ChaseMoveY(player.speed, deltaTime);
-//								chase9.ChaseMoveY(player.speed, deltaTime);
-//								chase10.ChaseMoveY(player.speed, deltaTime);
+								chase2.ChaseMoveY(player.speed, deltaTime);
+								chase3.ChaseMoveY(player.speed, deltaTime);
+								chase4.ChaseMoveY(player.speed, deltaTime);
+								chase5.ChaseMoveY(player.speed, deltaTime);
+								chase6.ChaseMoveY(player.speed, deltaTime);
+								chase7.ChaseMoveY(player.speed, deltaTime);
+								chase8.ChaseMoveY(player.speed, deltaTime);
+								chase9.ChaseMoveY(player.speed, deltaTime);
+								chase10.ChaseMoveY(player.speed, deltaTime);
 
-//								turret1.MoveY(player.speed, deltaTime);
-//								turret2.MoveY(player.speed, deltaTime);
-//								turret3.MoveY(player.speed, deltaTime);
-//								turret4.MoveY(player.speed, deltaTime);
-//								turret5.MoveY(player.speed, deltaTime);
-//								turret6.MoveY(player.speed, deltaTime);
-//								turret7.MoveY(player.speed, deltaTime);
-//								turret8.MoveY(player.speed, deltaTime);
-//								turret9.MoveY(player.speed, deltaTime);
-//								SoulWarden.MoveY(player.speed, deltaTime);
+								turret1.MoveY(player.speed, deltaTime);
+								turret2.MoveY(player.speed, deltaTime);
+								turret3.MoveY(player.speed, deltaTime);
+								turret4.MoveY(player.speed, deltaTime);
+								turret5.MoveY(player.speed, deltaTime);
+								turret6.MoveY(player.speed, deltaTime);
+								turret7.MoveY(player.speed, deltaTime);
+								turret8.MoveY(player.speed, deltaTime);
+								turret9.MoveY(player.speed, deltaTime);
+								SoulWarden.MoveY(player.speed, deltaTime);
 
-//								key.MoveY(player.speed, deltaTime);
-//								health.MoveY(player.speed, deltaTime);
-//								magic.MoveY(player.speed, deltaTime);
+								key.MoveY(player.speed, deltaTime);
+								health1.MoveY(player.speed, deltaTime);
+								magic1.MoveY(player.speed, deltaTime);
+								health2.MoveY(player.speed, deltaTime);
+								magic2.MoveY(player.speed, deltaTime);
+								health3.MoveY(player.speed, deltaTime);
+								magic3.MoveY(player.speed, deltaTime);
+								health4.MoveY(player.speed, deltaTime);
+								magic4.MoveY(player.speed, deltaTime);
+								health5.MoveY(player.speed, deltaTime);
+								magic5.MoveY(player.speed, deltaTime);
 
 								spirits.MoveY(player.speed, deltaTime);
 								lights.MoveY(player.speed, deltaTime);
 								cage.MoveY(player.speed, deltaTime);
+								exit.MoveY(player.speed, deltaTime);
 							}
 							else
 							{
@@ -898,28 +1002,30 @@ int main(int argc, char* argv[]) {
 						//UDPATE ENEMIES*************
 						chase1.Update(deltaTime, player.posRect);
 						chase2.Update(deltaTime, player.posRect);
-						//chase3.Update(deltaTime, player.posRect);
-						//chase4.Update(deltaTime, player.posRect);
-						//chase5.Update(deltaTime, player.posRect);
-						//chase6.Update(deltaTime, player.posRect);
-						//chase7.Update(deltaTime, player.posRect);
-						//chase8.Update(deltaTime, player.posRect);
-						//chase9.Update(deltaTime, player.posRect);
-						//chase10.Update(deltaTime, player.posRect);
+						chase3.Update(deltaTime, player.posRect);
+						chase4.Update(deltaTime, player.posRect);
+						chase5.Update(deltaTime, player.posRect);
+						chase6.Update(deltaTime, player.posRect);
+						chase7.Update(deltaTime, player.posRect);
+						chase8.Update(deltaTime, player.posRect);
+						chase9.Update(deltaTime, player.posRect);
+						chase10.Update(deltaTime, player.posRect);
 
-						//turret1.Update(deltaTime, player.posRect);
-						//turret2.Update(deltaTime, player.posRect);
-						//turret3.Update(deltaTime, player.posRect);
-						//turret4.Update(deltaTime, player.posRect);
-						//turret5.Update(deltaTime, player.posRect);
-						//turret6.Update(deltaTime, player.posRect);
-						//turret7.Update(deltaTime, player.posRect);
-						//turret8.Update(deltaTime, player.posRect);
-						//turret9.Update(deltaTime, player.posRect);
-						//SoulWarden.Update(deltaTime, player.posRect);
+						turret1.Update(deltaTime, player.posRect);
+						turret2.Update(deltaTime, player.posRect);
+						turret3.Update(deltaTime, player.posRect);
+						turret4.Update(deltaTime, player.posRect);
+						turret5.Update(deltaTime, player.posRect);
+						turret6.Update(deltaTime, player.posRect);
+						turret7.Update(deltaTime, player.posRect);
+						turret8.Update(deltaTime, player.posRect);
+						turret9.Update(deltaTime, player.posRect);
+						SoulWarden.Update(deltaTime, player.posRect);
 
 						//check for hit from tanks
 						//1
+						if(chase1.alive)
+						{
 						if (SDL_HasIntersection(&player.posRect, &chase1.chaseRect))
 						{
 							player.chaseHit();
@@ -930,6 +1036,10 @@ int main(int argc, char* argv[]) {
 								gameState = LOSE;
 							}
 						}
+						}
+						//2
+						if(chase2.alive)
+						{
 						if (SDL_HasIntersection(&player.posRect, &chase2.chaseRect))
 						{
 							player.chaseHit();
@@ -940,7 +1050,11 @@ int main(int argc, char* argv[]) {
 								gameState = LOSE;
 							}
 						}
-				/*		if (SDL_HasIntersection(&player.posRect, &chase3.chaseRect))
+						}
+						//3
+						if(chase3.alive)
+						{
+						if (SDL_HasIntersection(&player.posRect, &chase3.chaseRect))
 						{
 							player.chaseHit();
 							if (player.playerHealth <= 0)
@@ -950,6 +1064,10 @@ int main(int argc, char* argv[]) {
 								gameState = LOSE;
 							}
 						}
+						}
+						//4
+						if(chase4.alive)
+						{
 						if (SDL_HasIntersection(&player.posRect, &chase4.chaseRect))
 						{
 							player.chaseHit();
@@ -960,6 +1078,10 @@ int main(int argc, char* argv[]) {
 								gameState = LOSE;
 							}
 						}
+						}
+						//5
+						if(chase5.alive)
+						{
 						if (SDL_HasIntersection(&player.posRect, &chase5.chaseRect))
 						{
 							player.chaseHit();
@@ -970,6 +1092,10 @@ int main(int argc, char* argv[]) {
 								gameState = LOSE;
 							}
 						}
+						}
+						//6
+						if(chase6.alive)
+						{
 						if (SDL_HasIntersection(&player.posRect, &chase6.chaseRect))
 						{
 							player.chaseHit();
@@ -980,6 +1106,10 @@ int main(int argc, char* argv[]) {
 								gameState = LOSE;
 							}
 						}
+						}
+						//7
+						if(chase7.alive)
+						{
 						if (SDL_HasIntersection(&player.posRect, &chase7.chaseRect))
 						{
 							player.chaseHit();
@@ -990,6 +1120,10 @@ int main(int argc, char* argv[]) {
 								gameState = LOSE;
 							}
 						}
+						}
+						//8
+						if(chase8.alive)
+						{
 						if (SDL_HasIntersection(&player.posRect, &chase8.chaseRect))
 						{
 							player.chaseHit();
@@ -1000,6 +1134,10 @@ int main(int argc, char* argv[]) {
 								gameState = LOSE;
 							}
 						}
+						}
+						//9
+						if(chase9.alive)
+						{
 						if (SDL_HasIntersection(&player.posRect, &chase9.chaseRect))
 						{
 							player.chaseHit();
@@ -1010,6 +1148,10 @@ int main(int argc, char* argv[]) {
 								gameState = LOSE;
 							}
 						}
+						}
+						//10
+						if(chase10.alive)
+						{
 						if (SDL_HasIntersection(&player.posRect, &chase10.chaseRect))
 						{
 							player.chaseHit();
@@ -1019,13 +1161,16 @@ int main(int argc, char* argv[]) {
 								player.Reset();
 								gameState = LOSE;
 							}
-						}			*/
+						}
+						}
 
-						//check if player hit guards
+						//check if player hit chase
 						for (int i = 0; i < player.bulletList.size(); i++)
 						{
 							//chase
 							//1
+							if(chase1.alive)
+							{
 							if (SDL_HasIntersection(&chase1.chaseRect, &player.bulletList[i].posRect))
 							{
 								//Mix_PlayChannel(-1, guardHit, 0);
@@ -1035,7 +1180,10 @@ int main(int argc, char* argv[]) {
 									chase1.RemoveHealth();
 								}
 							}
+							}
 							//2
+							if(chase2.alive)
+							{
 							if (SDL_HasIntersection(&chase2.chaseRect, &player.bulletList[i].posRect))
 							{
 								//Mix_PlayChannel(-1, guardHit, 0);
@@ -1045,91 +1193,118 @@ int main(int argc, char* argv[]) {
 									chase2.RemoveHealth();
 								}
 							}
+							}
 							//3
-				/*			if (SDL_HasIntersection(&chase3.chaseRect, &player.bulletList[i].posRect))
+							if(chase3.alive)
 							{
-								Mix_PlayChannel(-1, guardHit, 0);
+							if (SDL_HasIntersection(&chase3.chaseRect, &player.bulletList[i].posRect))
+							{
+								//Mix_PlayChannel(-1, guardHit, 0);
 								player.bulletList[i].Reset();
 								if(chase3.active == true)
 								{
 									chase3.RemoveHealth();
 								}
 							}
+							}
 							//4
+							if(chase4.alive)
+							{
 							if (SDL_HasIntersection(&chase4.chaseRect, &player.bulletList[i].posRect))
 							{
-								Mix_PlayChannel(-1, guardHit, 0);
+								//Mix_PlayChannel(-1, guardHit, 0);
 								player.bulletList[i].Reset();
 								if(chase4.active == true)
 								{
 									chase4.RemoveHealth();
 								}
 							}
+							}
 							//5
+							if(chase5.alive)
+							{
 							if (SDL_HasIntersection(&chase5.chaseRect, &player.bulletList[i].posRect))
 							{
-								Mix_PlayChannel(-1, guardHit, 0);
+								//Mix_PlayChannel(-1, guardHit, 0);
 								player.bulletList[i].Reset();
 								if(chase5.active == true)
 								{
 									chase5.RemoveHealth();
 								}
 							}
+							}
 							//6
+							if(chase6.alive)
+							{
 							if (SDL_HasIntersection(&chase6.chaseRect, &player.bulletList[i].posRect))
 							{
-								Mix_PlayChannel(-1, guardHit, 0);
+								//Mix_PlayChannel(-1, guardHit, 0);
 								player.bulletList[i].Reset();
 								if(chase6.active == true)
 								{
 									chase6.RemoveHealth();
 								}
 							}
+							}
 							//7
+							if(chase7.alive)
+							{
 							if (SDL_HasIntersection(&chase7.chaseRect, &player.bulletList[i].posRect))
 							{
-								Mix_PlayChannel(-1, guardHit, 0);
+								//Mix_PlayChannel(-1, guardHit, 0);
 								player.bulletList[i].Reset();
 								if(chase7.active == true)
 								{
 									chase7.RemoveHealth();
 								}
 							}
+							}
 							//8
+							if(chase8.alive)
+							{
 							if (SDL_HasIntersection(&chase8.chaseRect, &player.bulletList[i].posRect))
 							{
-								Mix_PlayChannel(-1, guardHit, 0);
+								//Mix_PlayChannel(-1, guardHit, 0);
 								player.bulletList[i].Reset();
 								if(chase8.active == true)
 								{
 									chase8.RemoveHealth();
 								}
 							}
+							}
 							//9
+							if(chase9.alive)
+							{
 							if (SDL_HasIntersection(&chase9.chaseRect, &player.bulletList[i].posRect))
 							{
-								Mix_PlayChannel(-1, guardHit, 0);
+								//Mix_PlayChannel(-1, guardHit, 0);
 								player.bulletList[i].Reset();
 								if(chase9.active == true)
 								{
 									chase9.RemoveHealth();
 								}
 							}
+							}
 							//10
+							if(chase10.alive)
+							{
 							if (SDL_HasIntersection(&chase10.chaseRect, &player.bulletList[i].posRect))
 							{
-								Mix_PlayChannel(-1, guardHit, 0);
+								//Mix_PlayChannel(-1, guardHit, 0);
 								player.bulletList[i].Reset();
 								if(chase10.active == true)
 								{
 									chase10.RemoveHealth();
 								}
-							}		*/
+							}
+							}
 						}
 
 						//check for hit from turret
 						//1
-				/*		for (int i = 0; i < turret1.bulletList.size(); i++)
+						if(turret1.active)
+						{
+						for (int i = 0; i < turret1.bulletList.size(); i++)
 						{
 							if (SDL_HasIntersection(&player.posRect, &turret1.bulletList[i].posRect))
 							{
@@ -1143,7 +1318,10 @@ int main(int argc, char* argv[]) {
 								}
 							}
 						}
+						}
 						//2
+						if(turret2.active)
+						{
 						for (int i = 0; i < turret2.bulletList.size(); i++)
 						{
 							if (SDL_HasIntersection(&player.posRect, &turret2.bulletList[i].posRect))
@@ -1158,7 +1336,10 @@ int main(int argc, char* argv[]) {
 								}
 							}
 						}
+						}
 						//3
+						if(turret3.active)
+						{
 						for (int i = 0; i < turret3.bulletList.size(); i++)
 						{
 							if (SDL_HasIntersection(&player.posRect, &turret3.bulletList[i].posRect))
@@ -1173,7 +1354,10 @@ int main(int argc, char* argv[]) {
 								}
 							}
 						}
+						}
 						//4
+						if(turret4.active)
+						{
 						for (int i = 0; i < turret4.bulletList.size(); i++)
 						{
 							if (SDL_HasIntersection(&player.posRect, &turret4.bulletList[i].posRect))
@@ -1188,7 +1372,10 @@ int main(int argc, char* argv[]) {
 								}
 							}
 						}
+						}
 						//5
+						if(turret5.active)
+						{
 						for (int i = 0; i < turret5.bulletList.size(); i++)
 						{
 							if (SDL_HasIntersection(&player.posRect, &turret5.bulletList[i].posRect))
@@ -1203,7 +1390,10 @@ int main(int argc, char* argv[]) {
 								}
 							}
 						}
+						}
 						//6
+						if(turret6.active)
+						{
 						for (int i = 0; i < turret6.bulletList.size(); i++)
 						{
 							if (SDL_HasIntersection(&player.posRect, &turret6.bulletList[i].posRect))
@@ -1218,7 +1408,10 @@ int main(int argc, char* argv[]) {
 								}
 							}
 						}
+						}
 						//7
+						if(turret7.active)
+						{
 						for (int i = 0; i < turret7.bulletList.size(); i++)
 						{
 							if (SDL_HasIntersection(&player.posRect, &turret7.bulletList[i].posRect))
@@ -1233,7 +1426,10 @@ int main(int argc, char* argv[]) {
 								}
 							}
 						}
+						}
 						//8
+						if(turret8.active)
+						{
 						for (int i = 0; i < turret8.bulletList.size(); i++)
 						{
 							if (SDL_HasIntersection(&player.posRect, &turret8.bulletList[i].posRect))
@@ -1248,7 +1444,10 @@ int main(int argc, char* argv[]) {
 								}
 							}
 						}
+						}
 						//9
+						if(turret9.active)
+						{
 						for (int i = 0; i < turret9.bulletList.size(); i++)
 						{
 							if (SDL_HasIntersection(&player.posRect, &turret9.bulletList[i].posRect))
@@ -1263,7 +1462,10 @@ int main(int argc, char* argv[]) {
 								}
 							}
 						}
+						}
 						//Warden
+						if(SoulWarden.active)
+						{
 						for (int i = 0; i < SoulWarden.bulletList.size(); i++)
 						{
 							if (SDL_HasIntersection(&player.posRect, &SoulWarden.bulletList[i].posRect))
@@ -1277,129 +1479,309 @@ int main(int argc, char* argv[]) {
 									gameState = LOSE;
 								}
 							}
-						}		*/
+						}
+						}
 
 						//check if player hit turret
 						for (int i = 0; i < player.bulletList.size(); i++)
 						{
 							//turret1
-					/*		if (SDL_HasIntersection(&turret1.baseRect, &player.bulletList[i].posRect))
+							if(turret1.active)
+							{
+							if (SDL_HasIntersection(&turret1.baseRect, &player.bulletList[i].posRect))
 							{
 								//Mix_PlayChannel(-1, kingHit, 0);
 								player.bulletList[i].Reset();
 								turret1.RemoveHealth();
 							}
+							}
 							//turret2
+							if(turret2.active)
+							{
 							if (SDL_HasIntersection(&turret2.baseRect, &player.bulletList[i].posRect))
 							{
 								//Mix_PlayChannel(-1, kingHit, 0);
 								player.bulletList[i].Reset();
 								turret2.RemoveHealth();
 							}
+							}
 							//turret3
+							if(turret3.active)
+							{
 							if (SDL_HasIntersection(&turret3.baseRect, &player.bulletList[i].posRect))
 							{
 								//Mix_PlayChannel(-1, kingHit, 0);
 								player.bulletList[i].Reset();
 								turret3.RemoveHealth();
 							}
+							}
 							//turret4
+							if(turret4.active)
+							{
 							if (SDL_HasIntersection(&turret4.baseRect, &player.bulletList[i].posRect))
 							{
 								//Mix_PlayChannel(-1, kingHit, 0);
 								player.bulletList[i].Reset();
 								turret4.RemoveHealth();
 							}
+							}
 							//turret5
+							if(turret5.active)
+							{
 							if (SDL_HasIntersection(&turret5.baseRect, &player.bulletList[i].posRect))
 							{
 								//Mix_PlayChannel(-1, kingHit, 0);
 								player.bulletList[i].Reset();
 								turret5.RemoveHealth();
 							}
+							}
 							//turret6
+							if(turret6.active)
+							{
 							if (SDL_HasIntersection(&turret6.baseRect, &player.bulletList[i].posRect))
 							{
 								//Mix_PlayChannel(-1, kingHit, 0);
 								player.bulletList[i].Reset();
 								turret6.RemoveHealth();
 							}
+							}
 							//turret7
+							if(turret7.active)
+							{
 							if (SDL_HasIntersection(&turret7.baseRect, &player.bulletList[i].posRect))
 							{
 								//Mix_PlayChannel(-1, kingHit, 0);
 								player.bulletList[i].Reset();
 								turret7.RemoveHealth();
 							}
+							}
 							//turret8
+							if(turret8.active)
+							{
 							if (SDL_HasIntersection(&turret8.baseRect, &player.bulletList[i].posRect))
 							{
 								//Mix_PlayChannel(-1, kingHit, 0);
 								player.bulletList[i].Reset();
 								turret8.RemoveHealth();
 							}
+							}
 							//turret9
+							if(turret9.active)
+							{
 							if (SDL_HasIntersection(&turret9.baseRect, &player.bulletList[i].posRect))
 							{
 								//Mix_PlayChannel(-1, kingHit, 0);
 								player.bulletList[i].Reset();
 								turret9.RemoveHealth();
 							}
+							}
 							//Warden
+							if(SoulWarden.active)
+							{
 							if (SDL_HasIntersection(&SoulWarden.baseRect, &player.bulletList[i].posRect))
 							{
 								//Mix_PlayChannel(-1, kingHit, 0);
 								player.bulletList[i].Reset();
-								SoulWarden.RemoveHealth();
+								SoulWarden.health --;
 								if(SoulWarden.health <= 0)
 								{
-									key.active = true;
+									wardenDead = true;
+									SoulWarden.Reset();
 								}
-							}		*/
+
+							}
+							}
 						}
 
 					//key
-/*				if (SDL_HasIntersection(&player.posRect, &key.pickupRect))
+			if(key.active)
+			{
+				if (SDL_HasIntersection(&player.posRect, &key.pickupRect))
 					{
 					//	Mix_PlayChannel(-1, pickupSound, 0);
 						key.active = false;
+						wardenDead = false;
 						key.pickupRect.x = -5000;
 						key.pickupRect.y = -5000;
 						hasKey = true;
 					}
-				//health
-			if (SDL_HasIntersection(&player.posRect, &health.pickupRect))
+			}
+
+			if(needHealth == true)
+			{
+				//health1
+				if (SDL_HasIntersection(&player.posRect, &health1.pickupRect))
 				{
 				//	Mix_PlayChannel(-1, pickupSound, 0);
-					health.active = false;
-					health.pickupRect.x = -5000;
-					health.pickupRect.y = -5000;
+					health1.active = false;
 					player.playerHealth += 25;
 					if(player.playerHealth >= 100)
 					{
 						player.playerHealth = 100;
 					}
+					if(player.playerHealth > 75)
+					{
+						needHealth = false;
+					}
 					player.healthR.w = player.playerHealth/player.maxHealth * 147;
-
 				}
-				//magic
-			if (SDL_HasIntersection(&player.posRect, &magic.pickupRect))
+				//health2
+				if (SDL_HasIntersection(&player.posRect, &health2.pickupRect))
 				{
 				//	Mix_PlayChannel(-1, pickupSound, 0);
-					magic.active = false;
-					magic.pickupRect.x = -5000;
-					magic.pickupRect.y = -5000;
+					health2.active = false;
+					player.playerHealth += 25;
+					if(player.playerHealth >= 100)
+					{
+						player.playerHealth = 100;
+					}
+					if(player.playerHealth > 75)
+					{
+						needHealth = false;
+					}
+					player.healthR.w = player.playerHealth/player.maxHealth * 147;
+				}
+				//health3
+				if (SDL_HasIntersection(&player.posRect, &health3.pickupRect))
+				{
+				//	Mix_PlayChannel(-1, pickupSound, 0);
+					health3.active = false;
+					player.playerHealth += 25;
+					if(player.playerHealth >= 100)
+					{
+						player.playerHealth = 100;
+					}
+					if(player.playerHealth > 75)
+					{
+						needHealth = false;
+					}
+					player.healthR.w = player.playerHealth/player.maxHealth * 147;
+				}
+				//health4
+				if (SDL_HasIntersection(&player.posRect, &health4.pickupRect))
+				{
+				//	Mix_PlayChannel(-1, pickupSound, 0);
+					health4.active = false;
+					player.playerHealth += 25;
+					if(player.playerHealth >= 100)
+					{
+						player.playerHealth = 100;
+					}
+					if(player.playerHealth > 75)
+					{
+						needHealth = false;
+					}
+					player.healthR.w = player.playerHealth/player.maxHealth * 147;
+				}
+				//health5
+				if (SDL_HasIntersection(&player.posRect, &health5.pickupRect))
+				{
+				//	Mix_PlayChannel(-1, pickupSound, 0);
+					health5.active = false;
+					player.playerHealth += 25;
+					if(player.playerHealth >= 100)
+					{
+						player.playerHealth = 100;
+					}
+					if(player.playerHealth > 75)
+					{
+						needHealth = false;
+					}
+					player.healthR.w = player.playerHealth/player.maxHealth * 147;
+				}
+			}
+
+			if(needMagic == true)
+			{
+				//magic1
+				if (SDL_HasIntersection(&player.posRect, &magic1.pickupRect))
+				{
+				//	Mix_PlayChannel(-1, pickupSound, 0);
+					magic1.active = false;
 					player.playerMagic += 25;
 					if(player.playerMagic >= 100)
 					{
 						player.playerMagic = 100;
 					}
+					if(player.playerMagic > 75)
+					{
+						needMagic = false;
+					}
 					player.magicR.w = player.playerMagic/player.maxMagic * 147;
-
-				}	*/
-						if(hasKey == true)
+				}
+				//magic2
+				if (SDL_HasIntersection(&player.posRect, &magic2.pickupRect))
+				{
+				//	Mix_PlayChannel(-1, pickupSound, 0);
+					magic2.active = false;
+					player.playerMagic += 25;
+					if(player.playerMagic >= 100)
+					{
+						player.playerMagic = 100;
+					}
+					if(player.playerMagic > 75)
+					{
+						needMagic = false;
+					}
+					player.magicR.w = player.playerMagic/player.maxMagic * 147;
+				}
+				//magic3
+				if (SDL_HasIntersection(&player.posRect, &magic3.pickupRect))
+				{
+				//	Mix_PlayChannel(-1, pickupSound, 0);
+					magic3.active = false;
+					player.playerMagic += 25;
+					if(player.playerMagic >= 100)
+					{
+						player.playerMagic = 100;
+					}
+					if(player.playerMagic > 75)
+					{
+						needMagic = false;
+					}
+					player.magicR.w = player.playerMagic/player.maxMagic * 147;
+				}
+				//magic4
+				if (SDL_HasIntersection(&player.posRect, &magic4.pickupRect))
+				{
+				//	Mix_PlayChannel(-1, pickupSound, 0);
+					magic4.active = false;
+					player.playerMagic += 25;
+					if(player.playerMagic >= 100)
+					{
+						player.playerMagic = 100;
+					}
+					if(player.playerMagic > 75)
+					{
+						needMagic = false;
+					}
+					player.magicR.w = player.playerMagic/player.maxMagic * 147;
+				}
+				//magic5
+				if (SDL_HasIntersection(&player.posRect, &magic5.pickupRect))
+				{
+				//	Mix_PlayChannel(-1, pickupSound, 0);
+					magic5.active = false;
+					player.playerMagic += 25;
+					if(player.playerMagic >= 100)
+					{
+						player.playerMagic = 100;
+					}
+					if(player.playerMagic > 75)
+					{
+						needMagic = false;
+					}
+					player.magicR.w = player.playerMagic/player.maxMagic * 147;
+				}
+			}
+						if(hasKey == true && cage.active == true)
 						{
 						capture = SDL_HasIntersection(&player.posRect, &cage.pickupRect);
+						}
+
+						if(hasCerberus == true)
+						{
+						escape = SDL_HasIntersection(&player.posRect, &exit.pickupRect);
 						}
 
 
@@ -1420,31 +1802,87 @@ int main(int argc, char* argv[]) {
 
 						if(hasKey == true)
 						{
-							//SDL_RenderCopy(renderer, keyGUI, NULL, &keypos);
+							SDL_RenderCopy(renderer, keyGUI, NULL, &keypos);
 						}
 
 						//Draw key
 						if (key.active)
 						{
-							//key.Draw(renderer);
+							key.Draw(renderer);
 						}
-						if (health.active)
+
+						if(needHealth == true)
 						{
-							//health.Draw(renderer);
-						}
-						if (magic.active)
+						if (health1.active)
 						{
-							//magic.Draw(renderer);
+							health1.Draw(renderer);
 						}
+						if (health2.active)
+						{
+							health2.Draw(renderer);
+						}
+						if (health3.active)
+						{
+							health3.Draw(renderer);
+						}
+						if (health4.active)
+						{
+							health4.Draw(renderer);
+						}
+						if (health5.active)
+						{
+							health5.Draw(renderer);
+						}
+						}
+
+						if(needMagic == true)
+						{
+						if (magic1.active)
+						{
+							magic1.Draw(renderer);
+						}
+						if (magic2.active)
+						{
+							magic2.Draw(renderer);
+						}
+						if (magic3.active)
+						{
+							magic3.Draw(renderer);
+						}
+						if (magic4.active)
+						{
+							magic4.Draw(renderer);
+						}
+						if (magic5.active)
+						{
+							magic5.Draw(renderer);
+						}
+						}
+
 						if(cage.active)
 						{
 							cage.Draw(renderer);
 						}
 
+						if(capture)
+						{
+							cText.Draw(renderer);
+						}
+
+						if(escape)
+						{
+							eText.Draw(renderer);
+						}
+
+						if(hasCerberus)
+						{
+							exit.Draw(renderer);
+						}
+
 						//Draw player1 tank
 						player.Draw(renderer);
 
-/*						turret1.Draw(renderer);
+						turret1.Draw(renderer);
 						turret2.Draw(renderer);
 						turret3.Draw(renderer);
 						turret4.Draw(renderer);
@@ -1453,18 +1891,18 @@ int main(int argc, char* argv[]) {
 						turret7.Draw(renderer);
 						turret8.Draw(renderer);
 						turret9.Draw(renderer);
-						SoulWarden.Draw(renderer);*/
+						SoulWarden.Draw(renderer);
 
 						chase1.Draw(renderer);
 						chase2.Draw(renderer);
-/*						chase3.Draw(renderer);
+						chase3.Draw(renderer);
 						chase4.Draw(renderer);
 						chase5.Draw(renderer);
 						chase6.Draw(renderer);
 						chase7.Draw(renderer);
 						chase8.Draw(renderer);
 						chase9.Draw(renderer);
-						chase10.Draw(renderer);*/
+						chase10.Draw(renderer);
 
 						cursor.Draw(renderer);
 

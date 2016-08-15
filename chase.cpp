@@ -5,6 +5,7 @@ Chase::Chase(SDL_Renderer *renderer, string filePath, string audioPath, float x,
 {
 	//activate
 	active = false;
+	alive = true;
 
 	//fire sound
 	explode = Mix_LoadWAV((audioPath + "fire.wav").c_str());
@@ -18,6 +19,9 @@ Chase::Chase(SDL_Renderer *renderer, string filePath, string audioPath, float x,
 	//set the SDL_Rect
 	chaseRect.x = x;
 	chaseRect.y = y;
+
+	oldX = x;
+	oldY = y;
 
 	//use SDL_QueryTexture
 	int w,h;
@@ -38,16 +42,14 @@ Chase::Chase(SDL_Renderer *renderer, string filePath, string audioPath, float x,
 
 void Chase::Reset()
 {
-	//reset the x pos
-	chaseRect.x = -1000;
-
-	//update pos_X
-	posT_X = chaseRect.x;
 
 	health = 10;
 
+	chaseRect.x = oldX;
+	chaseRect.y = oldY;
+
 	//deactivate
-	active = false;
+	alive = false;
 }
 
 void Chase::RemoveHealth()
@@ -81,14 +83,18 @@ void Chase::ChaseMoveY(float tankSpeed, float deltaTime)
 //turret draw
 void Chase::Draw(SDL_Renderer *renderer)
 {
+	if(alive == true)
+	{
 	//draw
 	SDL_RenderCopyEx(renderer, chase, NULL, &chaseRect, angle, &center, SDL_FLIP_NONE);
+	}
 }
 
 //tank update
 void Chase::Update(float deltaTime, SDL_Rect tankRect)
 {
-
+	if(alive)
+	{
 	double distancex = (chaseRect.x - tankRect.x) * (chaseRect.x - tankRect.x);
 	double distancey = (chaseRect.y - tankRect.y) * (chaseRect.y - tankRect.y);
 
@@ -123,6 +129,7 @@ void Chase::Update(float deltaTime, SDL_Rect tankRect)
 		//update player pos
 		chaseRect.x = (int)(posT_X + 0.5f);
 		chaseRect.y = (int)(posT_Y + 0.5f);
+	}
 	}
 }
 
