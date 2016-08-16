@@ -73,6 +73,8 @@ public:
 	//audio sound effect - CHUNK
 	Mix_Chunk *fire;
 
+	Mix_Chunk *die;
+
 	//Turret's creation method
 	Turret(SDL_Renderer *renderer, string filePath, string audioPath, int turretNum, float x, float y);
 

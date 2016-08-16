@@ -39,7 +39,7 @@ Player::Player(SDL_Renderer *renderer, int pNum, string filePath, string audioPa
 	pVelY = 0;
 
 	//tank firing sound
-	fire = Mix_LoadWAV((audioPath + "throw.wav").c_str());
+	fire = Mix_LoadWAV((audioPath + "shoot.wav").c_str());
 
 	//tank path to image
 	if(playerNum == 0)
@@ -187,7 +187,7 @@ void Player::Fire()
 {
 	if(playerMagic > 0)
 	{
-		playerMagic -= 1;
+		//playerMagic -= 1;
 
 		magicR.w = playerMagic/maxMagic * 147;
 	}
@@ -228,6 +228,7 @@ void Player::OnMouseButton(const SDL_MouseButtonEvent event)
 		switch(event.button)
 		{
 		case SDL_BUTTON_LEFT:
+
 			CreateBullet();
 			break;
 		}

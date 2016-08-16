@@ -6,11 +6,16 @@ Turret::Turret(SDL_Renderer *renderer, string filePath, string audioPath, int tu
 	//activate the turret
 	active = true;
 
-	//fire sound
-	fire = Mix_LoadWAV((audioPath + "fire.wav").c_str());
+
 
 	if(turretNum == 0)
 	{
+
+	//fire sound
+	fire = Mix_LoadWAV((audioPath + "turretFire.wav").c_str());
+
+	die = Mix_LoadWAV((audioPath + "turretDie.wav").c_str());
+
 	//Create the turret base file path
 	string basePath = filePath + "turretbase.png";
 
@@ -76,6 +81,12 @@ Turret::Turret(SDL_Renderer *renderer, string filePath, string audioPath, int tu
 	}
 	else if(turretNum == 1)
 	{
+
+	//fire sound
+	fire = Mix_LoadWAV((audioPath + "fire1.wav").c_str());
+
+	die = Mix_LoadWAV((audioPath + "wardenDie.wav").c_str());
+
 	//Create the turret base file path
 	string basePath = filePath + "wardenbase.png";
 
@@ -203,6 +214,7 @@ void Turret::RemoveHealth()
 
 void Turret::Reset()
 {
+	Mix_PlayChannel(-1, die, 0);
 
 	health = startHealth;
 

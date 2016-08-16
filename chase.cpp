@@ -8,7 +8,7 @@ Chase::Chase(SDL_Renderer *renderer, string filePath, string audioPath, float x,
 	alive = true;
 
 	//fire sound
-	explode = Mix_LoadWAV((audioPath + "fire.wav").c_str());
+	explode = Mix_LoadWAV((audioPath + "chaseDie.wav").c_str());
 
 	//create the guard
 	string enemyPath = filePath + "chase.png";
@@ -58,6 +58,9 @@ void Chase::RemoveHealth()
 
 	if(health <= 0)
 	{
+		//Play fire sound
+		Mix_PlayChannel(-1, explode, 0);
+
 		Reset();
 	}
 }

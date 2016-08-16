@@ -332,29 +332,34 @@ int main(int argc, char* argv[]) {
 
 		//Load a MUSIC file
 
-		//Mix_Music *bgm = Mix_LoadMUS((audio_dir + "music.mp3").c_str());
+		Mix_Music *bgm = Mix_LoadMUS((audio_dir + "menu.mp3").c_str());
 
-		//if (bgm == NULL) {
+		if (bgm == NULL) {
 			// In the case that the window could not be made...
-		//	printf("Could not create music: %s\n", SDL_GetError());
-		//	return 1;
-		//}
+			printf("Could not create music: %s\n", SDL_GetError());
+			return 1;
+		}
 
 		//if the MUSIC file is not playing - play it
-		//if (!Mix_PlayingMusic())
-		//	Mix_PlayMusic(bgm, -1);
+		if (!Mix_PlayingMusic())
+			Mix_PlayMusic(bgm, -1);
 
 		//Set up a Sound Effect CHUNK for the button over state
-		//Mix_Chunk *overSound = Mix_LoadWAV((audio_dir + "over.wav").c_str());
+		Mix_Chunk *overSound = Mix_LoadWAV((audio_dir + "over.wav").c_str());
 
 		//Set up a Sound Effect CHUNK for the button pressed state
-		//Mix_Chunk *pressedSound = Mix_LoadWAV((audio_dir + "pressed.wav").c_str());
+		Mix_Chunk *pressedSound = Mix_LoadWAV((audio_dir + "pressed.wav").c_str());
 
-		//Mix_Chunk *pickupSound = Mix_LoadWAV((audio_dir + "itemPickup.wav").c_str());
+		Mix_Chunk *pickupSound = Mix_LoadWAV((audio_dir + "pickup.wav").c_str());
 
-		//Mix_Chunk *guardHit = Mix_LoadWAV((audio_dir + "guardhit.wav").c_str());
+		Mix_Chunk *chaseHit = Mix_LoadWAV((audio_dir + "chaseHit.wav").c_str());
 
-		//Mix_Chunk *kingHit = Mix_LoadWAV((audio_dir + "kinghit.wav").c_str());
+		Mix_Chunk *turretHit = Mix_LoadWAV((audio_dir + "hit2.wav").c_str());
+
+		Mix_Chunk *playerHit = Mix_LoadWAV((audio_dir + "playerHit.wav").c_str());
+
+		Mix_Chunk *playerShoot = Mix_LoadWAV((audio_dir + "shoot.wav").c_str());
+
 
 
 		//********CREATE CURSOR BEGIN**********
@@ -458,7 +463,7 @@ int main(int argc, char* argv[]) {
 											if (players1Over)
 											{
 												//Play the Over sound - plays fine through levels, must pause/delay for QUIT
-												//Mix_PlayChannel(-1, pressedSound, 0);
+												Mix_PlayChannel(-1, pressedSound, 0);
 												menu = false;
 												gameState = LEVEL;
 
@@ -485,7 +490,7 @@ int main(int argc, char* argv[]) {
 						{
 							if (alreadyOver == false)
 							{
-								//Mix_PlayChannel(-1, overSound, 0);
+								Mix_PlayChannel(-1, overSound, 0);
 								alreadyOver = true;
 							}
 						}
@@ -532,16 +537,26 @@ int main(int argc, char* argv[]) {
 					{
 						alreadyOver = false;
 						level = true;
-						key.active = false;
+						key.active = true;
+						health1.active = true;
+						health2.active = true;
+						health3.active = true;
+						health4.active = true;
+						health5.active = true;
+						magic1.active = true;
+						magic2.active = true;
+						magic3.active = true;
+						magic4.active = true;
+						magic5.active = true;
 						SDL_ShowCursor(0);
 
-					/*	if (Mix_PlayingMusic())
+						if (Mix_PlayingMusic())
 						{
-							Mix_FadeOutMusic(2000);
+							Mix_FadeOutMusic(1000);
 							Mix_FreeMusic(bgm);
 						}
 
-						bgm = Mix_LoadMUS((audio_dir + "closingin.mp3").c_str());
+						bgm = Mix_LoadMUS((audio_dir + "finalFight.mp3").c_str());
 
 						if (bgm == NULL) {
 							 //In the case that the window could not be made...
@@ -551,7 +566,7 @@ int main(int argc, char* argv[]) {
 
 						//if the MUSIC file is not playing - play it
 						if (!Mix_PlayingMusic())
-							Mix_PlayMusic(bgm, -1);	*/
+							Mix_PlayMusic(bgm, -1);
 
 						players1Pressed = false;
 
@@ -646,6 +661,7 @@ int main(int argc, char* argv[]) {
 							case SDLK_e:
 								if(escape == true)
 								{
+									escape = false;
 									hasCerberus = false;
 									hasKey = false;
 									player.Reset();
@@ -728,6 +744,7 @@ int main(int argc, char* argv[]) {
 							{
 								if(player.playerMagic > 0)
 								{
+								Mix_PlayChannel(-1, playerShoot, 0);
 								player.OnMouseButton(e.button);
 								player.Fire();
 								}
@@ -755,30 +772,30 @@ int main(int argc, char* argv[]) {
 							player.flip = true;
 						}
 
-						if(player.playerMagic <= 75)
-						{
+						//if(player.playerMagic <= 75)
+						//{
 							needMagic = true;
 							magic1.active = true;
 							magic2.active = true;
 							magic3.active = true;
 							magic4.active = true;
 							magic5.active = true;
-						}
+						//}
 
-						if(player.playerHealth <= 75)
-						{
+						//if(player.playerHealth <= 75)
+						//{
 							needHealth = true;
 							health1.active = true;
 							health2.active = true;
 							health3.active = true;
 							health4.active = true;
 							health5.active = true;
-						}
+						//}
 
-						if(wardenDead)
-						{
+						//if(wardenDead)
+						//{
 							key.active = true;
-						}
+						//}
 
 						//move background
 						if ((player.posRect.x >= 1024 - player.posRect.w) && keyright == true)
@@ -1028,7 +1045,7 @@ int main(int argc, char* argv[]) {
 						{
 						if (SDL_HasIntersection(&player.posRect, &chase1.chaseRect))
 						{
-							player.chaseHit();
+							//player.chaseHit();
 							if (player.playerHealth <= 0)
 							{
 								level = false;
@@ -1042,7 +1059,7 @@ int main(int argc, char* argv[]) {
 						{
 						if (SDL_HasIntersection(&player.posRect, &chase2.chaseRect))
 						{
-							player.chaseHit();
+							//player.chaseHit();
 							if (player.playerHealth <= 0)
 							{
 								level = false;
@@ -1056,7 +1073,7 @@ int main(int argc, char* argv[]) {
 						{
 						if (SDL_HasIntersection(&player.posRect, &chase3.chaseRect))
 						{
-							player.chaseHit();
+							//player.chaseHit();
 							if (player.playerHealth <= 0)
 							{
 								level = false;
@@ -1070,7 +1087,7 @@ int main(int argc, char* argv[]) {
 						{
 						if (SDL_HasIntersection(&player.posRect, &chase4.chaseRect))
 						{
-							player.chaseHit();
+							//player.chaseHit();
 							if (player.playerHealth <= 0)
 							{
 								level = false;
@@ -1084,7 +1101,7 @@ int main(int argc, char* argv[]) {
 						{
 						if (SDL_HasIntersection(&player.posRect, &chase5.chaseRect))
 						{
-							player.chaseHit();
+							//player.chaseHit();
 							if (player.playerHealth <= 0)
 							{
 								level = false;
@@ -1098,7 +1115,7 @@ int main(int argc, char* argv[]) {
 						{
 						if (SDL_HasIntersection(&player.posRect, &chase6.chaseRect))
 						{
-							player.chaseHit();
+							//player.chaseHit();
 							if (player.playerHealth <= 0)
 							{
 								level = false;
@@ -1112,7 +1129,7 @@ int main(int argc, char* argv[]) {
 						{
 						if (SDL_HasIntersection(&player.posRect, &chase7.chaseRect))
 						{
-							player.chaseHit();
+							//player.chaseHit();
 							if (player.playerHealth <= 0)
 							{
 								level = false;
@@ -1126,7 +1143,7 @@ int main(int argc, char* argv[]) {
 						{
 						if (SDL_HasIntersection(&player.posRect, &chase8.chaseRect))
 						{
-							player.chaseHit();
+							//player.chaseHit();
 							if (player.playerHealth <= 0)
 							{
 								level = false;
@@ -1140,7 +1157,7 @@ int main(int argc, char* argv[]) {
 						{
 						if (SDL_HasIntersection(&player.posRect, &chase9.chaseRect))
 						{
-							player.chaseHit();
+							//player.chaseHit();
 							if (player.playerHealth <= 0)
 							{
 								level = false;
@@ -1154,7 +1171,7 @@ int main(int argc, char* argv[]) {
 						{
 						if (SDL_HasIntersection(&player.posRect, &chase10.chaseRect))
 						{
-							player.chaseHit();
+							//player.chaseHit();
 							if (player.playerHealth <= 0)
 							{
 								level = false;
@@ -1173,11 +1190,11 @@ int main(int argc, char* argv[]) {
 							{
 							if (SDL_HasIntersection(&chase1.chaseRect, &player.bulletList[i].posRect))
 							{
-								//Mix_PlayChannel(-1, guardHit, 0);
+								Mix_PlayChannel(-1, chaseHit, 0);
 								player.bulletList[i].Reset();
 								if(chase1.active == true)
 								{
-									chase1.RemoveHealth();
+									//chase1.RemoveHealth();
 								}
 							}
 							}
@@ -1186,11 +1203,11 @@ int main(int argc, char* argv[]) {
 							{
 							if (SDL_HasIntersection(&chase2.chaseRect, &player.bulletList[i].posRect))
 							{
-								//Mix_PlayChannel(-1, guardHit, 0);
+								Mix_PlayChannel(-1, chaseHit, 0);
 								player.bulletList[i].Reset();
 								if(chase2.active == true)
 								{
-									chase2.RemoveHealth();
+									//chase2.RemoveHealth();
 								}
 							}
 							}
@@ -1199,11 +1216,11 @@ int main(int argc, char* argv[]) {
 							{
 							if (SDL_HasIntersection(&chase3.chaseRect, &player.bulletList[i].posRect))
 							{
-								//Mix_PlayChannel(-1, guardHit, 0);
+								Mix_PlayChannel(-1, chaseHit, 0);
 								player.bulletList[i].Reset();
 								if(chase3.active == true)
 								{
-									chase3.RemoveHealth();
+									//chase3.RemoveHealth();
 								}
 							}
 							}
@@ -1212,11 +1229,11 @@ int main(int argc, char* argv[]) {
 							{
 							if (SDL_HasIntersection(&chase4.chaseRect, &player.bulletList[i].posRect))
 							{
-								//Mix_PlayChannel(-1, guardHit, 0);
+								Mix_PlayChannel(-1, chaseHit, 0);
 								player.bulletList[i].Reset();
 								if(chase4.active == true)
 								{
-									chase4.RemoveHealth();
+									//chase4.RemoveHealth();
 								}
 							}
 							}
@@ -1225,11 +1242,11 @@ int main(int argc, char* argv[]) {
 							{
 							if (SDL_HasIntersection(&chase5.chaseRect, &player.bulletList[i].posRect))
 							{
-								//Mix_PlayChannel(-1, guardHit, 0);
+								Mix_PlayChannel(-1, chaseHit, 0);
 								player.bulletList[i].Reset();
 								if(chase5.active == true)
 								{
-									chase5.RemoveHealth();
+									//chase5.RemoveHealth();
 								}
 							}
 							}
@@ -1238,11 +1255,11 @@ int main(int argc, char* argv[]) {
 							{
 							if (SDL_HasIntersection(&chase6.chaseRect, &player.bulletList[i].posRect))
 							{
-								//Mix_PlayChannel(-1, guardHit, 0);
+								Mix_PlayChannel(-1, chaseHit, 0);
 								player.bulletList[i].Reset();
 								if(chase6.active == true)
 								{
-									chase6.RemoveHealth();
+									//chase6.RemoveHealth();
 								}
 							}
 							}
@@ -1251,11 +1268,11 @@ int main(int argc, char* argv[]) {
 							{
 							if (SDL_HasIntersection(&chase7.chaseRect, &player.bulletList[i].posRect))
 							{
-								//Mix_PlayChannel(-1, guardHit, 0);
+								Mix_PlayChannel(-1, chaseHit, 0);
 								player.bulletList[i].Reset();
 								if(chase7.active == true)
 								{
-									chase7.RemoveHealth();
+									//chase7.RemoveHealth();
 								}
 							}
 							}
@@ -1264,11 +1281,11 @@ int main(int argc, char* argv[]) {
 							{
 							if (SDL_HasIntersection(&chase8.chaseRect, &player.bulletList[i].posRect))
 							{
-								//Mix_PlayChannel(-1, guardHit, 0);
+								Mix_PlayChannel(-1, chaseHit, 0);
 								player.bulletList[i].Reset();
 								if(chase8.active == true)
 								{
-									chase8.RemoveHealth();
+									//chase8.RemoveHealth();
 								}
 							}
 							}
@@ -1277,11 +1294,11 @@ int main(int argc, char* argv[]) {
 							{
 							if (SDL_HasIntersection(&chase9.chaseRect, &player.bulletList[i].posRect))
 							{
-								//Mix_PlayChannel(-1, guardHit, 0);
+								Mix_PlayChannel(-1, chaseHit, 0);
 								player.bulletList[i].Reset();
 								if(chase9.active == true)
 								{
-									chase9.RemoveHealth();
+									//chase9.RemoveHealth();
 								}
 							}
 							}
@@ -1290,11 +1307,11 @@ int main(int argc, char* argv[]) {
 							{
 							if (SDL_HasIntersection(&chase10.chaseRect, &player.bulletList[i].posRect))
 							{
-								//Mix_PlayChannel(-1, guardHit, 0);
+								Mix_PlayChannel(-1, chaseHit, 0);
 								player.bulletList[i].Reset();
 								if(chase10.active == true)
 								{
-									chase10.RemoveHealth();
+									//chase10.RemoveHealth();
 								}
 							}
 							}
@@ -1309,7 +1326,8 @@ int main(int argc, char* argv[]) {
 							if (SDL_HasIntersection(&player.posRect, &turret1.bulletList[i].posRect))
 							{
 								turret1.bulletList[i].Reset();
-								player.turretHit();
+								//player.turretHit();
+								Mix_PlayChannel(-1, playerHit, 0);
 								if(player.playerHealth <= 0)
 								{
 									player.Reset();
@@ -1327,7 +1345,8 @@ int main(int argc, char* argv[]) {
 							if (SDL_HasIntersection(&player.posRect, &turret2.bulletList[i].posRect))
 							{
 								turret2.bulletList[i].Reset();
-								player.turretHit();
+								//player.turretHit();
+								Mix_PlayChannel(-1, playerHit, 0);
 								if(player.playerHealth <= 0)
 								{
 									player.Reset();
@@ -1345,7 +1364,8 @@ int main(int argc, char* argv[]) {
 							if (SDL_HasIntersection(&player.posRect, &turret3.bulletList[i].posRect))
 							{
 								turret3.bulletList[i].Reset();
-								player.turretHit();
+								//player.turretHit();
+								Mix_PlayChannel(-1, playerHit, 0);
 								if(player.playerHealth <= 0)
 								{
 									player.Reset();
@@ -1363,7 +1383,8 @@ int main(int argc, char* argv[]) {
 							if (SDL_HasIntersection(&player.posRect, &turret4.bulletList[i].posRect))
 							{
 								turret4.bulletList[i].Reset();
-								player.turretHit();
+								//player.turretHit();
+								Mix_PlayChannel(-1, playerHit, 0);
 								if(player.playerHealth <= 0)
 								{
 									player.Reset();
@@ -1381,7 +1402,8 @@ int main(int argc, char* argv[]) {
 							if (SDL_HasIntersection(&player.posRect, &turret5.bulletList[i].posRect))
 							{
 								turret5.bulletList[i].Reset();
-								player.turretHit();
+								//player.turretHit();
+								Mix_PlayChannel(-1, playerHit, 0);
 								if(player.playerHealth <= 0)
 								{
 									player.Reset();
@@ -1399,7 +1421,8 @@ int main(int argc, char* argv[]) {
 							if (SDL_HasIntersection(&player.posRect, &turret6.bulletList[i].posRect))
 							{
 								turret6.bulletList[i].Reset();
-								player.turretHit();
+								//player.turretHit();
+								Mix_PlayChannel(-1, playerHit, 0);
 								if(player.playerHealth <= 0)
 								{
 									player.Reset();
@@ -1417,7 +1440,8 @@ int main(int argc, char* argv[]) {
 							if (SDL_HasIntersection(&player.posRect, &turret7.bulletList[i].posRect))
 							{
 								turret7.bulletList[i].Reset();
-								player.turretHit();
+								//player.turretHit();
+								Mix_PlayChannel(-1, playerHit, 0);
 								if(player.playerHealth <= 0)
 								{
 									player.Reset();
@@ -1435,7 +1459,8 @@ int main(int argc, char* argv[]) {
 							if (SDL_HasIntersection(&player.posRect, &turret8.bulletList[i].posRect))
 							{
 								turret8.bulletList[i].Reset();
-								player.turretHit();
+								//player.turretHit();
+								Mix_PlayChannel(-1, playerHit, 0);
 								if(player.playerHealth <= 0)
 								{
 									player.Reset();
@@ -1453,7 +1478,8 @@ int main(int argc, char* argv[]) {
 							if (SDL_HasIntersection(&player.posRect, &turret9.bulletList[i].posRect))
 							{
 								turret9.bulletList[i].Reset();
-								player.turretHit();
+								//player.turretHit();
+								Mix_PlayChannel(-1, playerHit, 0);
 								if(player.playerHealth <= 0)
 								{
 									player.Reset();
@@ -1471,7 +1497,8 @@ int main(int argc, char* argv[]) {
 							if (SDL_HasIntersection(&player.posRect, &SoulWarden.bulletList[i].posRect))
 							{
 								SoulWarden.bulletList[i].Reset();
-								player.wardenHit();
+								//player.wardenHit();
+								Mix_PlayChannel(-1, playerHit, 0);
 								if(player.playerHealth <= 0)
 								{
 									player.Reset();
@@ -1490,9 +1517,9 @@ int main(int argc, char* argv[]) {
 							{
 							if (SDL_HasIntersection(&turret1.baseRect, &player.bulletList[i].posRect))
 							{
-								//Mix_PlayChannel(-1, kingHit, 0);
+								Mix_PlayChannel(-1, turretHit, 0);
 								player.bulletList[i].Reset();
-								turret1.RemoveHealth();
+								//turret1.RemoveHealth();
 							}
 							}
 							//turret2
@@ -1500,9 +1527,9 @@ int main(int argc, char* argv[]) {
 							{
 							if (SDL_HasIntersection(&turret2.baseRect, &player.bulletList[i].posRect))
 							{
-								//Mix_PlayChannel(-1, kingHit, 0);
+								Mix_PlayChannel(-1, turretHit, 0);
 								player.bulletList[i].Reset();
-								turret2.RemoveHealth();
+								//turret2.RemoveHealth();
 							}
 							}
 							//turret3
@@ -1510,9 +1537,9 @@ int main(int argc, char* argv[]) {
 							{
 							if (SDL_HasIntersection(&turret3.baseRect, &player.bulletList[i].posRect))
 							{
-								//Mix_PlayChannel(-1, kingHit, 0);
+								Mix_PlayChannel(-1, turretHit, 0);
 								player.bulletList[i].Reset();
-								turret3.RemoveHealth();
+								//turret3.RemoveHealth();
 							}
 							}
 							//turret4
@@ -1520,9 +1547,9 @@ int main(int argc, char* argv[]) {
 							{
 							if (SDL_HasIntersection(&turret4.baseRect, &player.bulletList[i].posRect))
 							{
-								//Mix_PlayChannel(-1, kingHit, 0);
+								Mix_PlayChannel(-1, turretHit, 0);
 								player.bulletList[i].Reset();
-								turret4.RemoveHealth();
+								//turret4.RemoveHealth();
 							}
 							}
 							//turret5
@@ -1530,9 +1557,9 @@ int main(int argc, char* argv[]) {
 							{
 							if (SDL_HasIntersection(&turret5.baseRect, &player.bulletList[i].posRect))
 							{
-								//Mix_PlayChannel(-1, kingHit, 0);
+								Mix_PlayChannel(-1, turretHit, 0);
 								player.bulletList[i].Reset();
-								turret5.RemoveHealth();
+								//turret5.RemoveHealth();
 							}
 							}
 							//turret6
@@ -1540,9 +1567,9 @@ int main(int argc, char* argv[]) {
 							{
 							if (SDL_HasIntersection(&turret6.baseRect, &player.bulletList[i].posRect))
 							{
-								//Mix_PlayChannel(-1, kingHit, 0);
+								Mix_PlayChannel(-1, turretHit, 0);
 								player.bulletList[i].Reset();
-								turret6.RemoveHealth();
+								//turret6.RemoveHealth();
 							}
 							}
 							//turret7
@@ -1550,9 +1577,9 @@ int main(int argc, char* argv[]) {
 							{
 							if (SDL_HasIntersection(&turret7.baseRect, &player.bulletList[i].posRect))
 							{
-								//Mix_PlayChannel(-1, kingHit, 0);
+								Mix_PlayChannel(-1, turretHit, 0);
 								player.bulletList[i].Reset();
-								turret7.RemoveHealth();
+								//turret7.RemoveHealth();
 							}
 							}
 							//turret8
@@ -1560,9 +1587,9 @@ int main(int argc, char* argv[]) {
 							{
 							if (SDL_HasIntersection(&turret8.baseRect, &player.bulletList[i].posRect))
 							{
-								//Mix_PlayChannel(-1, kingHit, 0);
+								Mix_PlayChannel(-1, turretHit, 0);
 								player.bulletList[i].Reset();
-								turret8.RemoveHealth();
+								//turret8.RemoveHealth();
 							}
 							}
 							//turret9
@@ -1570,9 +1597,9 @@ int main(int argc, char* argv[]) {
 							{
 							if (SDL_HasIntersection(&turret9.baseRect, &player.bulletList[i].posRect))
 							{
-								//Mix_PlayChannel(-1, kingHit, 0);
+								Mix_PlayChannel(-1, turretHit, 0);
 								player.bulletList[i].Reset();
-								turret9.RemoveHealth();
+								//turret9.RemoveHealth();
 							}
 							}
 							//Warden
@@ -1580,9 +1607,9 @@ int main(int argc, char* argv[]) {
 							{
 							if (SDL_HasIntersection(&SoulWarden.baseRect, &player.bulletList[i].posRect))
 							{
-								//Mix_PlayChannel(-1, kingHit, 0);
+								Mix_PlayChannel(-1, turretHit, 0);
 								player.bulletList[i].Reset();
-								SoulWarden.health --;
+								//SoulWarden.health --;
 								if(SoulWarden.health <= 0)
 								{
 									wardenDead = true;
@@ -1598,12 +1625,12 @@ int main(int argc, char* argv[]) {
 			{
 				if (SDL_HasIntersection(&player.posRect, &key.pickupRect))
 					{
-					//	Mix_PlayChannel(-1, pickupSound, 0);
-						key.active = false;
+						Mix_PlayChannel(-1, pickupSound, 0);
+						//key.active = false;
 						wardenDead = false;
-						key.pickupRect.x = -5000;
-						key.pickupRect.y = -5000;
-						hasKey = true;
+						//key.pickupRect.x = -5000;
+						//key.pickupRect.y = -5000;
+						//hasKey = true;
 					}
 			}
 
@@ -1612,8 +1639,8 @@ int main(int argc, char* argv[]) {
 				//health1
 				if (SDL_HasIntersection(&player.posRect, &health1.pickupRect))
 				{
-				//	Mix_PlayChannel(-1, pickupSound, 0);
-					health1.active = false;
+					Mix_PlayChannel(-1, pickupSound, 0);
+					//health1.active = false;
 					player.playerHealth += 25;
 					if(player.playerHealth >= 100)
 					{
@@ -1628,8 +1655,8 @@ int main(int argc, char* argv[]) {
 				//health2
 				if (SDL_HasIntersection(&player.posRect, &health2.pickupRect))
 				{
-				//	Mix_PlayChannel(-1, pickupSound, 0);
-					health2.active = false;
+					Mix_PlayChannel(-1, pickupSound, 0);
+					//health2.active = false;
 					player.playerHealth += 25;
 					if(player.playerHealth >= 100)
 					{
@@ -1644,8 +1671,8 @@ int main(int argc, char* argv[]) {
 				//health3
 				if (SDL_HasIntersection(&player.posRect, &health3.pickupRect))
 				{
-				//	Mix_PlayChannel(-1, pickupSound, 0);
-					health3.active = false;
+					Mix_PlayChannel(-1, pickupSound, 0);
+					//health3.active = false;
 					player.playerHealth += 25;
 					if(player.playerHealth >= 100)
 					{
@@ -1660,8 +1687,8 @@ int main(int argc, char* argv[]) {
 				//health4
 				if (SDL_HasIntersection(&player.posRect, &health4.pickupRect))
 				{
-				//	Mix_PlayChannel(-1, pickupSound, 0);
-					health4.active = false;
+					Mix_PlayChannel(-1, pickupSound, 0);
+					//health4.active = false;
 					player.playerHealth += 25;
 					if(player.playerHealth >= 100)
 					{
@@ -1676,8 +1703,8 @@ int main(int argc, char* argv[]) {
 				//health5
 				if (SDL_HasIntersection(&player.posRect, &health5.pickupRect))
 				{
-				//	Mix_PlayChannel(-1, pickupSound, 0);
-					health5.active = false;
+					Mix_PlayChannel(-1, pickupSound, 0);
+					//health5.active = false;
 					player.playerHealth += 25;
 					if(player.playerHealth >= 100)
 					{
@@ -1696,8 +1723,8 @@ int main(int argc, char* argv[]) {
 				//magic1
 				if (SDL_HasIntersection(&player.posRect, &magic1.pickupRect))
 				{
-				//	Mix_PlayChannel(-1, pickupSound, 0);
-					magic1.active = false;
+					Mix_PlayChannel(-1, pickupSound, 0);
+					//magic1.active = false;
 					player.playerMagic += 25;
 					if(player.playerMagic >= 100)
 					{
@@ -1712,8 +1739,8 @@ int main(int argc, char* argv[]) {
 				//magic2
 				if (SDL_HasIntersection(&player.posRect, &magic2.pickupRect))
 				{
-				//	Mix_PlayChannel(-1, pickupSound, 0);
-					magic2.active = false;
+					Mix_PlayChannel(-1, pickupSound, 0);
+					//magic2.active = false;
 					player.playerMagic += 25;
 					if(player.playerMagic >= 100)
 					{
@@ -1728,8 +1755,8 @@ int main(int argc, char* argv[]) {
 				//magic3
 				if (SDL_HasIntersection(&player.posRect, &magic3.pickupRect))
 				{
-				//	Mix_PlayChannel(-1, pickupSound, 0);
-					magic3.active = false;
+					Mix_PlayChannel(-1, pickupSound, 0);
+					//magic3.active = false;
 					player.playerMagic += 25;
 					if(player.playerMagic >= 100)
 					{
@@ -1744,8 +1771,8 @@ int main(int argc, char* argv[]) {
 				//magic4
 				if (SDL_HasIntersection(&player.posRect, &magic4.pickupRect))
 				{
-				//	Mix_PlayChannel(-1, pickupSound, 0);
-					magic4.active = false;
+					Mix_PlayChannel(-1, pickupSound, 0);
+					//magic4.active = false;
 					player.playerMagic += 25;
 					if(player.playerMagic >= 100)
 					{
@@ -1760,8 +1787,8 @@ int main(int argc, char* argv[]) {
 				//magic5
 				if (SDL_HasIntersection(&player.posRect, &magic5.pickupRect))
 				{
-				//	Mix_PlayChannel(-1, pickupSound, 0);
-					magic5.active = false;
+					Mix_PlayChannel(-1, pickupSound, 0);
+					//magic5.active = false;
 					player.playerMagic += 25;
 					if(player.playerMagic >= 100)
 					{
@@ -1806,13 +1833,13 @@ int main(int argc, char* argv[]) {
 						}
 
 						//Draw key
-						if (key.active)
-						{
+						//if (key.active)
+						//{
 							key.Draw(renderer);
-						}
+						//}
 
-						if(needHealth == true)
-						{
+						//if(needHealth == true)
+						//{
 						if (health1.active)
 						{
 							health1.Draw(renderer);
@@ -1833,10 +1860,10 @@ int main(int argc, char* argv[]) {
 						{
 							health5.Draw(renderer);
 						}
-						}
+						//}
 
-						if(needMagic == true)
-						{
+						//if(needMagic == true)
+						//{
 						if (magic1.active)
 						{
 							magic1.Draw(renderer);
@@ -1857,7 +1884,7 @@ int main(int argc, char* argv[]) {
 						{
 							magic5.Draw(renderer);
 						}
-						}
+						//}
 
 						if(cage.active)
 						{
@@ -1921,6 +1948,24 @@ int main(int argc, char* argv[]) {
 						win = true;
 						SDL_ShowCursor(0);
 
+						if (Mix_PlayingMusic())
+						{
+							Mix_FadeOutMusic(1000);
+							Mix_FreeMusic(bgm);
+						}
+
+						bgm = Mix_LoadMUS((audio_dir + "win.mp3").c_str());
+
+						if (bgm == NULL) {
+							 //In the case that the window could not be made...
+							printf("Could not create music: %s\n", SDL_GetError());
+							return 1;
+						}
+
+						//if the MUSIC file is not playing - play it
+						if (!Mix_PlayingMusic())
+							Mix_PlayMusic(bgm, -1);
+
 						//start loop
 						while(win)
 						{
@@ -1975,7 +2020,7 @@ int main(int argc, char* argv[]) {
 											if (players1Over)
 											{
 												//Play the Over sound - plays fine through levels, must pause/delay for QUIT
-												//Mix_PlayChannel(-1, pressedSound, 0);
+												Mix_PlayChannel(-1, pressedSound, 0);
 												win = false;
 												gameState = LEVEL;
 
@@ -2002,7 +2047,7 @@ int main(int argc, char* argv[]) {
 						{
 							if (alreadyOver == false)
 							{
-								//Mix_PlayChannel(-1, overSound, 0);
+								Mix_PlayChannel(-1, overSound, 0);
 								alreadyOver = true;
 							}
 						}
@@ -2051,6 +2096,24 @@ int main(int argc, char* argv[]) {
 					alreadyOver = false;
 					lose = true;
 					SDL_ShowCursor(0);
+
+					if (Mix_PlayingMusic())
+					{
+						Mix_FadeOutMusic(1000);
+						Mix_FreeMusic(bgm);
+					}
+
+					bgm = Mix_LoadMUS((audio_dir + "lose.mp3").c_str());
+
+					if (bgm == NULL) {
+						 //In the case that the window could not be made...
+						printf("Could not create music: %s\n", SDL_GetError());
+						return 1;
+					}
+
+					//if the MUSIC file is not playing - play it
+					if (!Mix_PlayingMusic())
+						Mix_PlayMusic(bgm, -1);
 
 					//start loop
 					while(lose)
@@ -2106,7 +2169,7 @@ int main(int argc, char* argv[]) {
 										if (players1Over)
 										{
 											//Play the Over sound - plays fine through levels, must pause/delay for QUIT
-											//Mix_PlayChannel(-1, pressedSound, 0);
+											Mix_PlayChannel(-1, pressedSound, 0);
 											lose = false;
 											gameState = LEVEL;
 
@@ -2133,7 +2196,7 @@ int main(int argc, char* argv[]) {
 					{
 						if (alreadyOver == false)
 						{
-							//Mix_PlayChannel(-1, overSound, 0);
+							Mix_PlayChannel(-1, overSound, 0);
 							alreadyOver = true;
 						}
 					}
